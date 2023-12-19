@@ -5,8 +5,8 @@ import 'package:flutter/foundation.dart' show immutable;
 
 @immutable
 class Event {
-  final string id;
-  final string name;
+  final String id;
+  final String name;
   final DateTime date;
   Event({
     required this.id,
@@ -15,8 +15,8 @@ class Event {
   });
 
   Event copyWith({
-    string? id,
-    string? name,
+    String? id,
+    String? name,
     DateTime? date,
   }) {
     return Event(
@@ -28,23 +28,24 @@ class Event {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': id.toMap(),
-      'name': name.toMap(),
-      'date': date.millisecondsSinceEpoch,
+      'id': id,
+      'name': name,
+      'date': date.toIso8601String(),
     };
   }
 
   factory Event.fromMap(Map<String, dynamic> map) {
     return Event(
-      id: string.fromMap(map['id'] as Map<String,dynamic>),
-      name: string.fromMap(map['name'] as Map<String,dynamic>),
-      date: DateTime.fromMillisecondsSinceEpoch(map['date'] as int),
+      id: map['id'],
+      name: map['name'],
+      date: DateTime.parse(map['date']),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory Event.fromJson(String source) => Event.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory Event.fromJson(String source) =>
+      Event.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() => 'Event(id: $id, name: $name, date: $date)';
@@ -52,11 +53,8 @@ class Event {
   @override
   bool operator ==(covariant Event other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.id == id &&
-      other.name == name &&
-      other.date == date;
+
+    return other.id == id && other.name == name && other.date == date;
   }
 
   @override
