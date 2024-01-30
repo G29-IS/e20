@@ -1,6 +1,17 @@
 enum LoadingStatus { none, loading, error, success }
 
-enum EventType { concert, festival, bar, club, party, houseParty, privateParty, workshop, congress }
+enum EventType {
+  event,
+  concert,
+  festival,
+  bar,
+  club,
+  party,
+  houseParty,
+  privateParty,
+  workshop,
+  congress
+}
 
 enum EventVisibility { public, follower, following, followerAndFollowing }
 

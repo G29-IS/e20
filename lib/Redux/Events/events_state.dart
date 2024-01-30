@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart' show immutable;
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 
-import '/models/enums.dart';
-import '/models/event.dart';
+import '/Models/enums.dart';
+import '/Models/event.dart';
 
 @immutable
 class EventsState {
@@ -24,6 +24,7 @@ class EventsState {
 
   /// Loading status of the events feed.
   final LoadingStatus feedLoadingStatus;
+
   const EventsState({
     required this.eventsFeed,
     required this.events,

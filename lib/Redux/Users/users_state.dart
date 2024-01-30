@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart' show immutable;
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 
-import '/models/user.dart';
-import '/models/enums.dart';
+import '/Models/user.dart';
+import '/Models/enums.dart';
 
 @immutable
 class UsersState {
