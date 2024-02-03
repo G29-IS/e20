@@ -66,7 +66,7 @@ class EventsState {
   factory EventsState.fromMap(Map<String, dynamic> map) {
     return EventsState(
       eventsFeed: IList<IMap<DateTime, IList<String>>>.fromJson(
-        json,
+        json, // TODO: Che magia e' questa
         (p0) => p0 as IMap<DateTime, IList<String>>,
       ),
       events: IMap<String, Event>.fromEntries(map['events']),
