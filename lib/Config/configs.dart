@@ -1,1 +1,1 @@
-const String API_URL = 'https://e20-api.herokuapp.com';
+const String API_URL = 'https://api.e-20.net';
