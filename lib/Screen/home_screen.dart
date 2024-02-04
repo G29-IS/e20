@@ -113,7 +113,7 @@ class HomeScreen extends StatelessWidget {
                                     clipBehavior: Clip.hardEdge,
                                     decoration: BoxDecoration(
                                       color: Colors.grey,
-                                      borderRadius: BorderRadius.circular(16),
+                                      borderRadius: BorderRadius.circular(20),
                                     ),
                                     child: StoryView(
                                       controller: storyControllers[index],
@@ -121,39 +121,103 @@ class HomeScreen extends StatelessWidget {
                                       repeat: true,
                                       inline: true,
                                       onStoryShow: (s) {
-                                        print("Showing a story");
+                                        logWarning("Showing a story");
                                       },
                                       onComplete: () {
-                                        print("Completed a cycle");
+                                        logWarning("Completed a cycle");
                                       },
-                                      storyItems: [
-                                        StoryItem(
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                image: NetworkImage(
-                                                  "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                                                ),
-                                                fit: BoxFit.cover,
+                                      storyItems: vm.feed[index].values.first
+                                          .map(
+                                            (event) => StoryItem(
+                                              Stack(
+                                                children: [
+                                                  Container(
+                                                    decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                        image: NetworkImage(
+                                                          event.coverImageUrl,
+                                                        ),
+                                                        fit: BoxFit.cover,
+                                                        colorFilter: ColorFilter.mode(
+                                                            Colors.black.withOpacity(0.2),
+                                                            BlendMode.darken),
+                                                      ),
+                                                      color: Colors.grey[850],
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    decoration: BoxDecoration(
+                                                      gradient: LinearGradient(
+                                                        begin: FractionalOffset.topCenter,
+                                                        end: FractionalOffset.bottomCenter,
+                                                        colors: [
+                                                          Colors.black.withOpacity(0.6),
+                                                          Colors.black.withOpacity(0.1),
+                                                          Colors.black.withOpacity(0.1),
+                                                          Colors.black.withOpacity(0.8),
+                                                        ],
+                                                        stops: const [0.1, 0.2, 0.6, 0.7],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsets.all(22.0),
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment.start,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment.center,
+                                                          children: [
+                                                            const Icon(
+                                                              Icons.account_circle,
+                                                              color: Colors.white,
+                                                              size: 32,
+                                                            ),
+                                                            const SizedBox(width: 8),
+                                                            Text(
+                                                              event.idOrganizer,
+                                                              style: const TextStyle(
+                                                                color: Colors.white,
+                                                                fontSize: 18,
+                                                                fontWeight: FontWeight.normal,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        const Spacer(),
+                                                        Text(
+                                                          event.name,
+                                                          style: const TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 24,
+                                                            fontWeight: FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                        const SizedBox(height: 8),
+                                                        Text(
+                                                          DateFormat('HH:MM')
+                                                                  .format(event.openingDateTime) +
+                                                              ' - ' +
+                                                              (event.placeName ??
+                                                                  event.placeAddress),
+                                                          style: const TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 16,
+                                                            fontWeight: FontWeight.normal,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
+                                              duration: const Duration(seconds: 3),
                                             ),
-                                          ),
-                                          duration: const Duration(seconds: 3),
-                                        ),
-                                        StoryItem.inlineImage(
-                                          controller: storyControllers[index],
-                                          url:
-                                              "https://media.giphy.com/media/5GoVLqeAOo6PK/giphy.gif",
-                                          caption: const Text(
-                                            "Hektas, sektas and skatad",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              backgroundColor: Colors.black54,
-                                              fontSize: 17,
-                                            ),
-                                          ),
-                                        )
-                                      ],
+                                          )
+                                          .toList(),
                                     ),
                                   ),
                                 ),

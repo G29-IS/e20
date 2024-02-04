@@ -55,8 +55,9 @@ class MyApp extends StatelessWidget {
       child: MaterialApp.router(
         title: 'E20',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 4, 164, 9)),
+          colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 30, 215, 96)),
           useMaterial3: true,
+          fontFamily: 'Outfit',
         ),
         debugShowCheckedModeBanner: false,
         routerConfig: _router,

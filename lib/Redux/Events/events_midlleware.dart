@@ -140,10 +140,10 @@ _fetchEvents(Store<AppState> store, FetchEventsAction action, NextDispatcher nex
       description: String.fromCharCodes(
         Iterable.generate(100, (_) => 65 + Random().nextInt(26)),
       ),
-      placeName: 'Piazza Duomo',
-      placeAddress: 'Piazza Duomo, Trento',
-      doorOpeningDateTime: DateTime.now().add(const Duration(days: 2)),
-      openingDateTime: DateTime.now().add(const Duration(days: 2, hours: 1)),
+      placeName: 'Piazza Fiera, Trento',
+      placeAddress: 'Piazza Fiera, Trento',
+      doorOpeningDateTime: DateTime.now().add(const Duration(days: 1)),
+      openingDateTime: DateTime.now().add(const Duration(days: 1, hours: 1)),
       type: EventType.concert,
       visibility: EventVisibility.public,
       maxPartecipants: 1500,
@@ -172,10 +172,10 @@ _fetchEvents(Store<AppState> store, FetchEventsAction action, NextDispatcher nex
 
   IList<IMap<DateTime, IList<String>>> eventsFeed = List<IMap<DateTime, IList<String>>>.from([
     Map<DateTime, IList<String>>.from({
-      DateTime.now().add(const Duration(days: 1)): ['idev_1'].lock,
+      DateTime.now().add(const Duration(days: 1)): ['idev_1', 'idev_2'].lock,
     }).toIMap(),
     Map<DateTime, IList<String>>.from({
-      DateTime.now().add(const Duration(days: 2)): ['idev_2', 'idev_3'].lock,
+      DateTime.now().add(const Duration(days: 2)): ['idev_3'].lock,
     }).toIMap(),
   ]).toIList();
 
