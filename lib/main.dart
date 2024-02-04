@@ -1,11 +1,14 @@
-import 'package:e20/Screen/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:e20/firebase_options.dart';
 
+import '/Redux/store.dart';
+
 import '/Screen/home_screen.dart';
+import '/Screen/login_screen.dart';
 
 import '/Utils/console_log.dart';
 
@@ -47,14 +50,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'E20',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return StoreProvider(
+      store: store,
+      child: MaterialApp.router(
+        title: 'E20',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 4, 164, 9)),
+          useMaterial3: true,
+        ),
+        debugShowCheckedModeBanner: false,
+        routerConfig: _router,
       ),
-      debugShowCheckedModeBanner: false,
-      routerConfig: _router,
     );
   }
 }

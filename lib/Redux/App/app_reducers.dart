@@ -4,7 +4,7 @@ import '/Redux/App/app_state.dart';
 import '/Redux/Events/events_reducers.dart';
 import '/Redux/Users/users_reducers.dart';
 
-AppState appReducer(AppState state, action) {
+AppState appReducers(AppState state, action) {
   return AppState(
     authState: authReducers(state.authState, action),
     eventsState: eventsReducer(state.eventsState, action),
