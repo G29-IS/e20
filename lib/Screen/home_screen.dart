@@ -39,29 +39,7 @@ class HomeScreen extends StatelessWidget {
       builder: (context, vm) {
         return Scaffold(
             backgroundColor: const Color.fromARGB(255, 34, 34, 34),
-            bottomNavigationBar: BottomAppBar(
-              color: Colors.black,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.home),
-                    color: Colors.white,
-                    onPressed: () {},
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.add_box),
-                    color: Colors.white24,
-                    onPressed: () {},
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.account_circle),
-                    color: Colors.white24,
-                    onPressed: () {},
-                  ),
-                ],
-              ),
-            ),
+            extendBody: true,
             body: Builder(builder: (context) {
               switch (vm.loadingStatus) {
                 case LoadingStatus.success:
