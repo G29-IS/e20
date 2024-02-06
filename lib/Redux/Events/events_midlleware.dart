@@ -1,5 +1,4 @@
-import 'dart:math';
-
+import 'package:collection/collection.dart';
 import 'package:redux/redux.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 
@@ -22,22 +21,15 @@ _fetchEvents(Store<AppState> store, FetchEventsAction action, NextDispatcher nex
   store.dispatch(SetEventsLoadingStatusAction(LoadingStatus.loading));
   await RequestHandler.fetchFeed().then((value) {
     /// PARSING
-    IMap<String, Event> events = (value['events'] as Map<String, dynamic>)
-        .map((key, value) => MapEntry(key.toString(), Event.fromJson(value)))
-        .lock; // lock to make it immutable
+    IList<dynamic> rawEvents = (value as List<dynamic>).lock;
 
-    IList<IMap<DateTime, IList<String>>> eventsFeed = List<IMap<DateTime, List<String>>>.from(
-      (value['eventsFeed'] as List<dynamic>).map(
-        (e) => Map<DateTime, List<String>>.from(
-          (e as Map<String, dynamic>).map(
-            (key, value) => MapEntry(
-              DateTime.parse(key),
-              List<String>.from(value.map((e) => e.toString())).toIList(),
-            ),
-          ),
-        ).toIMap(),
-      ),
-    ).toIList() as IList<IMap<DateTime, IList<String>>>;
+    IList<Event> parsedEvents = rawEvents.map((element) => Event.fromJson(element)).toIList();
+
+    IMap<String, Event> events = { for (var event in parsedEvents) event.idEvent: event }.lock; 
+
+    IList<IMap<DateTime, IList<String>>> eventsFeed = [(groupBy(parsedEvents, (event) => event.openingDateTime)
+      .map((key, value) => MapEntry(key, value.map((e) => e.idEvent).toIList())))
+      .toIMap()].lock;
 
     store.dispatch(AddEventsToStateAction(events));
     store.dispatch(AddEventsIdsToFeedAction(eventsFeed));
