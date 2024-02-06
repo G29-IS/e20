@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:e20/models/event_place.dart';
 import 'package:flutter/foundation.dart' show immutable;
 
 import 'enums.dart';
@@ -11,12 +12,11 @@ class Event {
   final String coverImageUrl;
   final String idOrganizer;
   final String description;
-  final String? placeName;
-  final String placeAddress;
+  final EventPlace place;
   final DateTime doorOpeningDateTime;
   final DateTime openingDateTime;
   final EventType type;
-  final int? maxPartecipants;
+  final int? maxParticipants;
   final EventVisibility visibility;
   final String? paymentLink;
   final EventAvailability availability;
@@ -28,12 +28,11 @@ class Event {
     required this.coverImageUrl,
     required this.idOrganizer,
     required this.description,
-    this.placeName,
-    required this.placeAddress,
+    required this.place,
     required this.doorOpeningDateTime,
     required this.openingDateTime,
     required this.type,
-    this.maxPartecipants,
+    this.maxParticipants,
     required this.visibility,
     this.paymentLink,
     required this.availability,
@@ -46,12 +45,11 @@ class Event {
     String? coverImageUrl,
     String? idOrganizer,
     String? description,
-    String? placeName,
-    String? placeAddress,
+    EventPlace? place,
     DateTime? doorOpeningDateTime,
     DateTime? openingDateTime,
     EventType? type,
-    int? maxPartecipants,
+    int? maxParticipants,
     EventVisibility? visibility,
     String? paymentLink,
     EventAvailability? availability,
@@ -63,12 +61,11 @@ class Event {
       coverImageUrl: coverImageUrl ?? this.coverImageUrl,
       idOrganizer: idOrganizer ?? this.idOrganizer,
       description: description ?? this.description,
-      placeName: placeName ?? this.placeName,
-      placeAddress: placeAddress ?? this.placeAddress,
+      place: place ?? this.place,
       doorOpeningDateTime: doorOpeningDateTime ?? this.doorOpeningDateTime,
       openingDateTime: openingDateTime ?? this.openingDateTime,
       type: type ?? this.type,
-      maxPartecipants: maxPartecipants ?? this.maxPartecipants,
+      maxParticipants: maxParticipants ?? this.maxParticipants,
       visibility: visibility ?? this.visibility,
       paymentLink: paymentLink ?? this.paymentLink,
       availability: availability ?? this.availability,
@@ -84,15 +81,12 @@ class Event {
     result.addAll({'coverImageUrl': coverImageUrl});
     result.addAll({'idOrganizer': idOrganizer});
     result.addAll({'description': description});
-    if (placeName != null) {
-      result.addAll({'placeName': placeName});
-    }
-    result.addAll({'placeAddress': placeAddress});
+    result.addAll({'place': place.toMap()});
     result.addAll({'doorOpeningDateTime': doorOpeningDateTime.toIso8601String()});
     result.addAll({'openingDateTime': openingDateTime.toIso8601String()});
     result.addAll({'type': type.name});
-    if (maxPartecipants != null) {
-      result.addAll({'maxPartecipants': maxPartecipants});
+    if (maxParticipants != null) {
+      result.addAll({'maxParticipants': maxParticipants});
     }
     result.addAll({'visibility': visibility.name});
     if (paymentLink != null) {
@@ -111,15 +105,14 @@ class Event {
       coverImageUrl: map['coverImageUrl'] ?? '',
       idOrganizer: map['idOrganizer'] ?? '',
       description: map['description'] ?? '',
-      placeName: map['placeName'],
-      placeAddress: map['placeAddress'] ?? '',
+      place: EventPlace.fromMap(map['place']),
       doorOpeningDateTime: DateTime.parse(map['doorOpeningDateTime']),
       openingDateTime: DateTime.parse(map['openingDateTime']),
-      type: EventType.values.byName(map['type']),
-      maxPartecipants: map['maxPartecipants']?.toInt(),
-      visibility: EventVisibility.values.byName(map['visibility']),
+      type: EventType.values.byName(map['type'].toString().toLowerCase()),
+      maxParticipants: map['maxParticipants']?.toInt(),
+      visibility: EventVisibility.values.byName(map['visibility'].toString().toLowerCase()),
       paymentLink: map['paymentLink'],
-      availability: EventAvailability.values.byName(map['availability']),
+      availability: EventAvailability.values.byName(map['availability'].toString().toLowerCase()),
       isModified: map['isModified'] ?? false,
     );
   }
@@ -130,7 +123,7 @@ class Event {
 
   @override
   String toString() {
-    return 'Event(idEvent: $idEvent, name: $name, coverImageUrl: $coverImageUrl, idOrganizer: $idOrganizer, description: $description, placeName: $placeName, placeAddress: $placeAddress, doorOpeningDateTime: $doorOpeningDateTime, openingDateTime: $openingDateTime, type: $type, maxPartecipants: $maxPartecipants, visibility: $visibility, paymentLink: $paymentLink, availability: $availability, isModified: $isModified)';
+    return 'Event(idEvent: $idEvent, name: $name, coverImageUrl: $coverImageUrl, idOrganizer: $idOrganizer, description: $description, place: $place, doorOpeningDateTime: $doorOpeningDateTime, openingDateTime: $openingDateTime, type: $type, maxPartecipants: $maxParticipants, visibility: $visibility, paymentLink: $paymentLink, availability: $availability, isModified: $isModified)';
   }
 
   @override
@@ -143,12 +136,11 @@ class Event {
         other.coverImageUrl == coverImageUrl &&
         other.idOrganizer == idOrganizer &&
         other.description == description &&
-        other.placeName == placeName &&
-        other.placeAddress == placeAddress &&
+        other.place == place &&
         other.doorOpeningDateTime == doorOpeningDateTime &&
         other.openingDateTime == openingDateTime &&
         other.type == type &&
-        other.maxPartecipants == maxPartecipants &&
+        other.maxParticipants == maxParticipants &&
         other.visibility == visibility &&
         other.paymentLink == paymentLink &&
         other.availability == availability &&
@@ -162,12 +154,11 @@ class Event {
         coverImageUrl.hashCode ^
         idOrganizer.hashCode ^
         description.hashCode ^
-        placeName.hashCode ^
-        placeAddress.hashCode ^
+        place.hashCode ^
         doorOpeningDateTime.hashCode ^
         openingDateTime.hashCode ^
         type.hashCode ^
-        maxPartecipants.hashCode ^
+        maxParticipants.hashCode ^
         visibility.hashCode ^
         paymentLink.hashCode ^
         availability.hashCode ^

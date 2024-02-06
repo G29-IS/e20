@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 enum LoadingStatus { none, loading, error, success }
 
 enum EventType {
@@ -7,15 +9,15 @@ enum EventType {
   bar,
   club,
   party,
-  houseParty,
-  privateParty,
+  houseparty,
+  privateparty,
   workshop,
   congress
 }
 
 enum EventVisibility { public, follower, following, followerAndFollowing }
 
-enum EventAvailability { available, runningOut, canceled, soldOut }
+enum EventAvailability { available, running_out, canceled, sold_out }
 
 enum UserVisibility { public, private }
 

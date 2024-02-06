@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:collection/collection.dart';
 import 'package:redux/redux.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
@@ -19,17 +21,16 @@ List<Middleware<AppState>> createEventsMiddleware() {
 
 _fetchEvents(Store<AppState> store, FetchEventsAction action, NextDispatcher next) async {
   store.dispatch(SetEventsLoadingStatusAction(LoadingStatus.loading));
-  await RequestHandler.fetchFeed().then((value) {
-    /// PARSING
-    IList<dynamic> rawEvents = (value as List<dynamic>).lock;
+  RequestHandler.fetchFeed().then((rawEvents) {
+    IList<Event> parsedEvents = rawEvents.map((element) => Event.fromMap(element)).toIList();
 
-    IList<Event> parsedEvents = rawEvents.map((element) => Event.fromJson(element)).toIList();
+    IMap<String, Event> events = {for (var event in parsedEvents) event.idEvent: event}.lock;
 
-    IMap<String, Event> events = { for (var event in parsedEvents) event.idEvent: event }.lock; 
-
-    IList<IMap<DateTime, IList<String>>> eventsFeed = [(groupBy(parsedEvents, (event) => event.openingDateTime)
-      .map((key, value) => MapEntry(key, value.map((e) => e.idEvent).toIList())))
-      .toIMap()].lock;
+    IList<IMap<DateTime, IList<String>>> eventsFeed = [
+      (groupBy(parsedEvents, (event) {
+        return event.openingDateTime.copyWith(hour: 0, minute: 0, second: 0, millisecond: 0, microsecond: 0);
+      }).map((key, value) => MapEntry(key, value.map((e) => e.idEvent).toIList()))).toIMap()
+    ].lock;
 
     store.dispatch(AddEventsToStateAction(events));
     store.dispatch(AddEventsIdsToFeedAction(eventsFeed));

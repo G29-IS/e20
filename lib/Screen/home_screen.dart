@@ -61,8 +61,7 @@ class HomeScreen extends StatelessWidget {
                       builder: (BuildContext context, int index) {
                         if (vm.feed.isEmpty) {
                           return const Center(
-                              child: Text('No events available',
-                                  style: TextStyle(color: Colors.white)));
+                              child: Text('No events available', style: TextStyle(color: Colors.white)));
                         } else {
                           return SafeArea(
                             top: true,
@@ -117,8 +116,7 @@ class HomeScreen extends StatelessWidget {
                                                         ),
                                                         fit: BoxFit.cover,
                                                         colorFilter: ColorFilter.mode(
-                                                            Colors.black.withOpacity(0.2),
-                                                            BlendMode.darken),
+                                                            Colors.black.withOpacity(0.2), BlendMode.darken),
                                                       ),
                                                       color: Colors.grey[850],
                                                     ),
@@ -144,10 +142,8 @@ class HomeScreen extends StatelessWidget {
                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
                                                         Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment.start,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment.center,
+                                                          mainAxisAlignment: MainAxisAlignment.start,
+                                                          crossAxisAlignment: CrossAxisAlignment.center,
                                                           children: [
                                                             const Icon(
                                                               Icons.account_circle,
@@ -176,11 +172,7 @@ class HomeScreen extends StatelessWidget {
                                                         ),
                                                         const SizedBox(height: 8),
                                                         Text(
-                                                          DateFormat('HH:MM')
-                                                                  .format(event.openingDateTime) +
-                                                              ' - ' +
-                                                              (event.placeName ??
-                                                                  event.placeAddress),
+                                                          '${DateFormat('HH:MM').format(event.openingDateTime)} - ${event.place.name ?? event.place.address}',
                                                           style: const TextStyle(
                                                             color: Colors.white,
                                                             fontSize: 16,

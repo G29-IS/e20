@@ -10,7 +10,7 @@ import '/Config/configs.dart';
 
 //Using Dio
 class RESTInterface {
-  static Future<Map<dynamic, dynamic>> GET({
+  static Future<Response<dynamic>> GET({
     required String path,
     Map<String, String>? headers,
   }) async {
@@ -25,10 +25,10 @@ class RESTInterface {
     var httpReq = await api.get(
       API_URL + path,
     );
-    return httpReq.data;
+    return httpReq;
   }
 
-  static Future<Map<dynamic, dynamic>> POST({
+  static Future<Response<dynamic>> POST({
     required String path,
     required Map<String, dynamic> body,
     Map<String, String>? headers,
@@ -42,10 +42,10 @@ class RESTInterface {
     }
     logError('[POST]: ${jsonEncode(body)}');
     var r = await api.post(API_URL + path, data: jsonEncode(body));
-    return r.data;
+    return r;
   }
 
-  static Future<Map<dynamic, dynamic>> PUT({
+  static Future<Response<dynamic>> PUT({
     required String path,
     FormData? body,
     Map<String, String>? headers,
@@ -58,10 +58,10 @@ class RESTInterface {
       });
     }
     var r = await api.put(API_URL + path, data: body);
-    return r.data;
+    return r;
   }
 
-  static Future<String> PUT_RAW({
+  static Future<Response<dynamic>> PUT_RAW({
     required String url,
     required List<int> body,
     Map<String, String>? headers,
@@ -83,10 +83,10 @@ class RESTInterface {
         },
       ),
     );
-    return r.data;
+    return r;
   }
 
-  static Future<Map<dynamic, dynamic>> DELETE({
+  static Future<Response<dynamic>> DELETE({
     required String path,
     required Map<String, dynamic> body,
     Map<String, String>? headers,
@@ -101,6 +101,6 @@ class RESTInterface {
     logError(body.toString());
     logError('[DELETE]: ${jsonEncode(body)}');
     var r = await api.delete(API_URL + path, data: jsonEncode(body));
-    return r.data;
+    return r;
   }
 }
