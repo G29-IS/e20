@@ -1,7 +1,14 @@
-import 'package:e20/Redux/selectors.dart';
-import 'package:e20/Redux/store.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:go_router/go_router.dart';
+
+import '/Models/enums.dart';
+
+import '/Redux/store.dart';
+import '/Redux/App/app_state.dart';
+import '/Redux/selectors.dart';
+import '/Redux/Auth/auth_actions.dart';
+import '/Redux/ViewModels/current_profileVM.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -33,15 +40,65 @@ class ProfileScreen extends StatelessWidget {
                 ],
               ),
             )
-          : const Center(
-              child: Text(
-                'Profile Screen',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
-              ),
-            ),
+          : StoreConnector<AppState, CurrentProfileViewModel>(
+              converter: (store) => CurrentProfileViewModel.create(store),
+              onInit: (store) {
+                store.dispatch(FetchCurrentUserAction());
+              },
+              distinct: true,
+              builder: (context, viewModel) {
+                switch (viewModel.loadingStatus) {
+                  case LoadingStatus.success:
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Welcome, ${viewModel.user.name}!',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 24,
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          ElevatedButton(
+                            onPressed: () {
+                              // store.dispatch(LogoutAction());
+                            },
+                            child: const Text('Log out'),
+                          ),
+                        ],
+                      ),
+                    );
+                  case LoadingStatus.error:
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'An error occurred while fetching your profile.',
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 24,
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          ElevatedButton(
+                            onPressed: () {
+                              store.dispatch(FetchCurrentUserAction());
+                            },
+                            child: const Text('Try again'),
+                          ),
+                        ],
+                      ),
+                    );
+                  case LoadingStatus.loading:
+                  default:
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                }
+              }),
     );
   }
 }

@@ -21,4 +21,4 @@ enum EventAvailability { available, running_out, canceled, sold_out }
 
 enum UserVisibility { public, private }
 
-enum Gender { male, female, other, notSpecified }
+enum Gender { male, female, other, not_specified }

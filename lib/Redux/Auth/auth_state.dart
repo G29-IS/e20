@@ -1,8 +1,9 @@
 import 'dart:convert';
 
-import 'package:e20/models/enums.dart';
-import 'package:e20/models/user.dart';
 import 'package:flutter/foundation.dart' show immutable;
+
+import '/Models/enums.dart';
+import '/Models/user.dart';
 
 @immutable
 class AuthState {
@@ -17,7 +18,7 @@ class AuthState {
 
   ///
   /// STATE
-  
+
   /// Loading status of the authentication process
   final LoadingStatus authLoadingStatus;
 
@@ -29,7 +30,9 @@ class AuthState {
 
   factory AuthState.initial() {
     return const AuthState(
-      authToken: null,
+      // authToken: null,
+      /// TODO: REMOVE AFTER LOGIN IMPLEMENTATION
+      authToken: "token",
       currentUser: null,
       authLoadingStatus: LoadingStatus.none,
     );
@@ -81,16 +84,16 @@ class AuthState {
 
   @override
   String toString() =>
-    'AuthStat(authToken: $authToken, currentUserL $currentUser, authLoadingStatus: $authLoadingStatus)';
+      'AuthStat(authToken: $authToken, currentUserL $currentUser, authLoadingStatus: $authLoadingStatus)';
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
     return other is AuthState &&
-      other.authToken == authToken &&
-      other.currentUser == currentUser &&
-      other.authLoadingStatus == authLoadingStatus;
+        other.authToken == authToken &&
+        other.currentUser == currentUser &&
+        other.authLoadingStatus == authLoadingStatus;
   }
 
   @override

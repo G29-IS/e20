@@ -8,6 +8,6 @@ AppState appReducers(AppState state, action) {
   return AppState(
     authState: authReducers(state.authState, action),
     eventsState: eventsReducer(state.eventsState, action),
-    usersState: usersReducer(state.usersState, action),
+    usersState: usersReducers(state.usersState, action),
   );
 }

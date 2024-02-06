@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart' show immutable;
 
-import '/models/enums.dart';
+import '/Models/enums.dart';
 
 @immutable
 class User {
@@ -16,7 +16,6 @@ class User {
   final DateTime birthDate;
   final Gender gender;
   // final CityOfInterest cityOfInterest; // TODO: on D3, CityOfInterest is not specified.
-  final UserVisibility visibility;
   final String profileImageUrl;
 
   const User({
@@ -29,9 +28,23 @@ class User {
     required this.phone,
     required this.birthDate,
     required this.gender,
-    required this.visibility,
     required this.profileImageUrl,
   });
+
+  static empty() {
+    return User(
+      idUser: '',
+      name: '',
+      surname: '',
+      username: '',
+      email: '',
+      passwordHash: '',
+      phone: '',
+      gender: Gender.other,
+      profileImageUrl: '',
+      birthDate: DateTime.now(),
+    );
+  }
 
   User copyWith({
     String? idUser,
@@ -43,7 +56,6 @@ class User {
     String? phone,
     DateTime? birthDate,
     Gender? gender,
-    UserVisibility? visibility,
     String? profileImageUrl,
   }) {
     return User(
@@ -56,7 +68,6 @@ class User {
       phone: phone ?? this.phone,
       birthDate: birthDate ?? this.birthDate,
       gender: gender ?? this.gender,
-      visibility: visibility ?? this.visibility,
       profileImageUrl: profileImageUrl ?? this.profileImageUrl,
     );
   }
@@ -74,7 +85,6 @@ class User {
     result.addAll({'phone': phone});
     result.addAll({'birthDate': birthDate.millisecondsSinceEpoch});
     result.addAll({'gender': gender.name});
-    result.addAll({'visibility': visibility.name});
     result.addAll({'profileImageUrl': profileImageUrl});
     return result;
   }
@@ -88,9 +98,8 @@ class User {
       email: map['email'] ?? '',
       passwordHash: map['passwordHash'],
       phone: map['phone'] ?? '',
-      birthDate: DateTime.fromMillisecondsSinceEpoch(map['birthDate']),
-      gender: Gender.values.byName(map['gender']),
-      visibility: UserVisibility.values.byName(map['visibility']),
+      birthDate: DateTime.parse(map['birthDate']),
+      gender: Gender.values.byName(map['gender'].toString().toLowerCase()),
       profileImageUrl: map['profileImageUrl'] ?? '',
     );
   }
@@ -101,7 +110,7 @@ class User {
 
   @override
   String toString() {
-    return 'User(idUser: $idUser, name: $name, surname: $surname, username: $username, email: $email, passwordHash: $passwordHash, phone: $phone, birthDate: $birthDate, gender: $gender, visibility: $visibility, profileImageUrl: $profileImageUrl)';
+    return 'User(idUser: $idUser, name: $name, surname: $surname, username: $username, email: $email, passwordHash: $passwordHash, phone: $phone, birthDate: $birthDate, gender: $gender, profileImageUrl: $profileImageUrl)';
   }
 
   @override
@@ -118,7 +127,6 @@ class User {
         other.phone == phone &&
         other.birthDate == birthDate &&
         other.gender == gender &&
-        other.visibility == visibility &&
         other.profileImageUrl == profileImageUrl;
   }
 
@@ -133,7 +141,6 @@ class User {
         phone.hashCode ^
         birthDate.hashCode ^
         gender.hashCode ^
-        visibility.hashCode ^
         profileImageUrl.hashCode;
   }
 }

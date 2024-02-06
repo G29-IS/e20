@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:e20/Redux/Auth/auth_state.dart';
 import 'package:flutter/foundation.dart' show immutable;
 
+import '/Redux/Auth/auth_state.dart';
 import '/Redux/Events/events_state.dart';
 import '/Redux/Users/users_state.dart';
 
@@ -20,8 +20,7 @@ class AppState {
 
   factory AppState.initial() {
     return AppState(
-      // TODO: Fetch previously authed user from some storage? Oppure si salva tutto l'app state direttamente?
-      authState: AuthState.initial(), 
+      authState: AuthState.initial(),
       eventsState: EventsState.initial(),
       usersState: UsersState.initial(),
     );
@@ -62,12 +61,16 @@ class AppState {
   factory AppState.fromJson(String source) => AppState.fromMap(json.decode(source));
 
   @override
-  String toString() => 'AppState(authState: $authState, eventsState: $eventsState, usersState: $usersState)';
+  String toString() =>
+      'AppState(authState: $authState, eventsState: $eventsState, usersState: $usersState)';
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    return other is AppState && other.authState == authState && other.eventsState == eventsState && other.usersState == usersState;
+    return other is AppState &&
+        other.authState == authState &&
+        other.eventsState == eventsState &&
+        other.usersState == usersState;
   }
 
   @override

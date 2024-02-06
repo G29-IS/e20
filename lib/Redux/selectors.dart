@@ -4,6 +4,7 @@ import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 
 import '/Models/enums.dart';
 import '/Models/event.dart';
+import '/Models/user.dart';
 
 import '/Redux/App/app_state.dart';
 
@@ -12,6 +13,15 @@ import '/Redux/App/app_state.dart';
 /// AUTH STATE
 
 String? tokenSel(Store<AppState> store) => store.state.authState.authToken;
+
+LoadingStatus authLoadingStatusSel(Store<AppState> store) =>
+    store.state.authState.authLoadingStatus;
+
+///
+///
+/// USER STATE
+
+User? currentUserSel(Store<AppState> store) => store.state.authState.currentUser;
 
 ///
 ///

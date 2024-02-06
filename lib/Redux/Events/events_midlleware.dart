@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:collection/collection.dart';
-import 'package:e20/models/event_place.dart';
 import 'package:redux/redux.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
+import 'package:collection/collection.dart';
 
 import '/Models/enums.dart';
 import '/Models/event.dart';
+import '/Models/event_place.dart';
 
 import '/Redux/App/app_state.dart';
 import '/Redux/Events/events_actions.dart';
@@ -17,7 +17,7 @@ import '/Utils/console_log.dart';
 
 List<Middleware<AppState>> createEventsMiddleware() {
   return [
-    TypedMiddleware<AppState, FetchEventsAction>(_fetchEvents).call,
+    TypedMiddleware<AppState, FetchEventsAction>(_fetchEvents),
   ];
 }
 

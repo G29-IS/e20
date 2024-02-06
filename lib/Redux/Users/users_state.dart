@@ -1,58 +1,73 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart' show immutable;
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
+import 'package:flutter/foundation.dart' show immutable;
 
-import '/Models/user.dart';
 import '/Models/enums.dart';
+import '/Models/user.dart';
 
 @immutable
 class UsersState {
-  ///
-  /// DATA
-
-  /// Data structure for storing users.
-  final IMap<String, User> users;
-
   ///
   /// STATE
 
   /// Loading status used when fetching user data.
   final LoadingStatus usersLoadingStatus;
 
+  ///
+  /// DATA
+
+  /// Data structure for storing users.
+  final IMap<String, User> users;
+
+  /// Data structure for storing events ids organized by user.
+  /// IMap<idUser, IList<idEvent>>
+  final IMap<String, IList<String>> eventsOrganizedByUser;
+
   const UsersState({
-    required this.users,
     required this.usersLoadingStatus,
+    required this.users,
+    required this.eventsOrganizedByUser,
   });
 
   factory UsersState.initial() {
     return UsersState(
       users: IMap(),
       usersLoadingStatus: LoadingStatus.none,
+      eventsOrganizedByUser: IMap(),
     );
   }
 
   UsersState copyWith({
-    IMap<String, User>? users,
     LoadingStatus? usersLoadingStatus,
+    IMap<String, User>? users,
+    IMap<String, IList<String>>? eventsOrganizedByUser,
   }) {
     return UsersState(
-      users: users ?? this.users,
       usersLoadingStatus: usersLoadingStatus ?? this.usersLoadingStatus,
+      users: users ?? this.users,
+      eventsOrganizedByUser: eventsOrganizedByUser ?? this.eventsOrganizedByUser,
     );
   }
 
   Map<String, dynamic> toMap() {
     final result = <String, dynamic>{};
-    result.addAll({'users': users.toJson((k) => k, (v) => v.toJson())});
+
     result.addAll({'usersLoadingStatus': usersLoadingStatus.name});
+    result.addAll({'users': users.toJson((p0) => p0, (p0) => p0.toMap())});
+    result.addAll({
+      'eventsOrganizedByUser':
+          eventsOrganizedByUser.toJson((p0) => p0, (p0) => p0.toJson((p0) => p0))
+    });
+
     return result;
   }
 
   factory UsersState.fromMap(Map<String, dynamic> map) {
     return UsersState(
-      users: IMap<String, User>.fromEntries(map['users']),
       usersLoadingStatus: LoadingStatus.values.byName(map['usersLoadingStatus']),
+      users: IMap<String, User>.fromEntries(map['users']),
+      eventsOrganizedByUser: IMap<String, IList<String>>.fromEntries(map['eventsOrganizedByUser']),
     );
   }
 
@@ -61,17 +76,19 @@ class UsersState {
   factory UsersState.fromJson(String source) => UsersState.fromMap(json.decode(source));
 
   @override
-  String toString() => 'UsersState(users: $users, usersLoadingStatus: $usersLoadingStatus)';
+  String toString() =>
+      'UsersState(usersLoadingStatus: $usersLoadingStatus, users: $users, eventsOrganizedByUser: $eventsOrganizedByUser)';
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
     return other is UsersState &&
+        other.usersLoadingStatus == usersLoadingStatus &&
         other.users == users &&
-        other.usersLoadingStatus == usersLoadingStatus;
+        other.eventsOrganizedByUser == eventsOrganizedByUser;
   }
 
   @override
-  int get hashCode => users.hashCode ^ usersLoadingStatus.hashCode;
+  int get hashCode => usersLoadingStatus.hashCode ^ users.hashCode ^ eventsOrganizedByUser.hashCode;
 }

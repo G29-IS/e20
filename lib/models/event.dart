@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:e20/models/event_place.dart';
 import 'package:flutter/foundation.dart' show immutable;
 
 import 'enums.dart';
+import '/Models/event_place.dart';
 
 @immutable
 class Event {

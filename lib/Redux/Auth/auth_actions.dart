@@ -1,16 +1,20 @@
-import 'package:e20/models/enums.dart';
-import 'package:e20/models/user.dart';
+import '/Models/enums.dart';
+import '/Models/user.dart';
 
 class SetAuthLoadingStatusAction {
   final LoadingStatus loadingStatus;
   SetAuthLoadingStatusAction(this.loadingStatus);
 }
 
-class SetCurrentUserAction {
-  final User? currentUser;
-  final String? token;
+class SetAuthTokenAction {
+  final String authToken;
+  SetAuthTokenAction(this.authToken);
+}
 
-  SetCurrentUserAction(this.currentUser, this.token);
+class SetCurrentUserAction {
+  final User currentUser;
+
+  SetCurrentUserAction(this.currentUser);
 }
 
 class LoginAction {
@@ -21,4 +25,8 @@ class LoginAction {
 
 class LoginWithGoogleAction {
   LoginWithGoogleAction();
+}
+
+class FetchCurrentUserAction {
+  FetchCurrentUserAction();
 }

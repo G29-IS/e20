@@ -1,11 +1,23 @@
-import 'package:e20/Redux/App/app_state.dart';
-import 'package:e20/Redux/Auth/auth_actions.dart';
-import 'package:e20/models/enums.dart';
+import 'dart:math';
+
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:redux/redux.dart';
+
+import '/Models/enums.dart';
+import '/Models/user.dart';
+
+import '/Redux/selectors.dart';
+import '/Redux/App/app_state.dart';
+import '/Redux/Auth/auth_actions.dart';
+import '/Redux/Users/users_actions.dart';
+
+import '/Services/request_handler.dart';
+import '/Utils/console_log.dart';
 
 List<Middleware<AppState>> createAuthMiddleware() {
   return [
     TypedMiddleware<AppState, LoginAction>(_login),
+    TypedMiddleware<AppState, FetchCurrentUserAction>(_fetchCurrentUser),
   ];
 }
 
@@ -15,4 +27,71 @@ _login(Store<AppState> store, LoginAction action, NextDispatcher next) async {
   // TODO: Api call with email ausername nd password
 
   store.dispatch(SetAuthLoadingStatusAction(LoadingStatus.success));
+}
+
+_fetchCurrentUser(Store<AppState> store, FetchCurrentUserAction action, NextDispatcher next) async {
+  store.dispatch(SetAuthLoadingStatusAction(LoadingStatus.loading));
+
+  // RequestHandler.fetchCurrentUser(tokenSel(store)).then(
+  //   (user) {
+  //     store.dispatch(SetCurrentUserAction(user));
+
+  // I use this endpoint to fetch the user's organized events
+  /// TODO: REMOVE AFTER LOGIN IMPLEMENTATION
+  // RequestHandler.fetchUser(tokenSel(store), idUser: user.idUser)
+  RequestHandler.fetchUser(idUser: "bc9e631a-5e19-4885-ac01-1a3c48ffe9d3").then((value) {
+    logSuccess("[MIDDLEWARE _fetchCurrentUser]: $value");
+    store.dispatch(
+      SetCurrentUserAction(User.fromMap(value['user'])),
+    );
+    store.dispatch(
+      SetCurrentUserOrganizedEventsIdsAction(
+        "bc9e631a-5e19-4885-ac01-1a3c48ffe9d3",
+        (value['eventsOrganized'] as List<dynamic>)
+            .map(
+              (e) => (e as Map<String, dynamic>)['idEvent'] as String,
+            )
+            .toList()
+            .lock,
+      ),
+    );
+    store.dispatch(SetAuthLoadingStatusAction(LoadingStatus.success));
+  }).catchError((error) {
+    logError("[MIDDLEWARE _fetchCurrentUser] RequestHandler.fetchUser: $error");
+    store.dispatch(SetAuthLoadingStatusAction(LoadingStatus.error));
+  });
+  //   },
+  // ).catchError((error) {
+  //   logError("[MIDDLEWARE _fetchCurrentUser] RequestHandler.fetchCurrentUser: $error");
+  //   store.dispatch(SetAuthLoadingStatusAction(LoadingStatus.error));
+  // });
+
+  // store.dispatch(SetAuthLoadingStatusAction(LoadingStatus.loading));
+
+  // RequestHandler.fetchCurrentUser(tokenSel(store)).then(
+  //   (user) {
+  //     store.dispatch(SetCurrentUserAction(user));
+
+  //     // I use this endpoint to fetch the user's organized events
+  //     /// TODO: REMOVE AFTER LOGIN IMPLEMENTATION
+  //     // RequestHandler.fetchUser(tokenSel(store), idUser: user.idUser)
+  //     RequestHandler.fetchUser(tokenSel(store), idUser: "bc9e631a-5e19-4885-ac01-1a3c48ffe9d3")
+  //         .then((value) {
+  //       logSuccess("[MIDDLEWARE _fetchCurrentUser]: $value");
+  //       store.dispatch(
+  //         SetCurrentUserOrganizedEventsIdsAction(
+  //           user.idUser,
+  //           value['eventsOrganized'],
+  //         ),
+  //       );
+  //     }).catchError((error) {
+  //       logError("[MIDDLEWARE _fetchCurrentUser] RequestHandler.fetchUser: $error");
+  //     });
+  //   },
+  // ).catchError((error) {
+  //   logError("[MIDDLEWARE _fetchCurrentUser] RequestHandler.fetchCurrentUser: $error");
+  //   store.dispatch(SetAuthLoadingStatusAction(LoadingStatus.error));
+  // });
+
+  // store.dispatch(SetAuthLoadingStatusAction(LoadingStatus.success));
 }
