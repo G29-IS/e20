@@ -61,7 +61,8 @@ class HomeScreen extends StatelessWidget {
                       builder: (BuildContext context, int index) {
                         if (vm.feed.isEmpty) {
                           return const Center(
-                              child: Text('No events available', style: TextStyle(color: Colors.white)));
+                              child: Text('No events available',
+                                  style: TextStyle(color: Colors.white)));
                         } else {
                           return SafeArea(
                             top: true,
@@ -116,7 +117,9 @@ class HomeScreen extends StatelessWidget {
                                                         ),
                                                         fit: BoxFit.cover,
                                                         colorFilter: ColorFilter.mode(
-                                                            Colors.black.withOpacity(0.2), BlendMode.darken),
+                                                          Colors.black.withOpacity(0.2),
+                                                          BlendMode.darken,
+                                                        ),
                                                       ),
                                                       color: Colors.grey[850],
                                                     ),
@@ -142,8 +145,10 @@ class HomeScreen extends StatelessWidget {
                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
                                                         Row(
-                                                          mainAxisAlignment: MainAxisAlignment.start,
-                                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment.start,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment.center,
                                                           children: [
                                                             const Icon(
                                                               Icons.account_circle,
@@ -151,12 +156,20 @@ class HomeScreen extends StatelessWidget {
                                                               size: 32,
                                                             ),
                                                             const SizedBox(width: 8),
-                                                            Text(
-                                                              event.idOrganizer,
-                                                              style: const TextStyle(
-                                                                color: Colors.white,
-                                                                fontSize: 18,
-                                                                fontWeight: FontWeight.normal,
+                                                            SizedBox(
+                                                              width: MediaQuery.of(context)
+                                                                      .size
+                                                                      .width *
+                                                                  0.6,
+                                                              child: Text(
+                                                                // TODO: put name of organizer here
+                                                                event.idOrganizer,
+                                                                style: const TextStyle(
+                                                                  color: Colors.white,
+                                                                  fontSize: 18,
+                                                                  fontWeight: FontWeight.normal,
+                                                                ),
+                                                                overflow: TextOverflow.ellipsis,
                                                               ),
                                                             ),
                                                           ],

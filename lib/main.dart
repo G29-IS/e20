@@ -29,6 +29,7 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
+final _shellNavigatorLogin = GlobalKey<NavigatorState>(debugLabel: 'login');
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorHome = GlobalKey<NavigatorState>(debugLabel: 'shellHome');
 final _shellNavigatorNewEvent = GlobalKey<NavigatorState>(debugLabel: 'shellNewEvent');
@@ -39,6 +40,14 @@ final GoRouter _router = GoRouter(
   navigatorKey: _rootNavigatorKey,
   initialLocation: '/home',
   routes: <RouteBase>[
+    ShellRoute(routes: [
+      GoRoute(
+        path: '/login',
+        builder: (BuildContext context, GoRouterState state) {
+          return const LoginScreen();
+        },
+      ),
+    ]),
     StatefulShellRoute.indexedStack(
       builder:
           (BuildContext context, GoRouterState state, StatefulNavigationShell navigationShell) {
@@ -81,6 +90,12 @@ final GoRouter _router = GoRouter(
               path: '/profile',
               builder: (BuildContext context, GoRouterState state) {
                 return const ProfileScreen();
+              },
+            ),
+            GoRoute(
+              path: '/login',
+              builder: (BuildContext context, GoRouterState state) {
+                return const LoginScreen();
               },
             ),
           ],
