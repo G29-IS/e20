@@ -108,8 +108,7 @@ class ProfileScreen extends StatelessWidget {
                                   child: Center(
                                     child: ElevatedButton(
                                       onPressed: () {
-                                        // TODO: Implement log out
-                                        // store.dispatch(LogoutAction());
+                                        store.dispatch(LogoutAction());
                                       },
                                       child: const Text('Log out'),
                                     ),

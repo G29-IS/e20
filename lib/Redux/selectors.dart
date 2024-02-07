@@ -14,8 +14,7 @@ import '/Redux/App/app_state.dart';
 
 String? tokenSel(Store<AppState> store) => store.state.authState.authToken;
 
-LoadingStatus authLoadingStatusSel(Store<AppState> store) =>
-    store.state.authState.authLoadingStatus;
+LoadingStatus authLoadingStatusSel(Store<AppState> store) => store.state.authState.authLoadingStatus;
 
 User? currentUserSel(Store<AppState> store) => store.state.authState.currentUser;
 
@@ -23,25 +22,21 @@ User? currentUserSel(Store<AppState> store) => store.state.authState.currentUser
 ///
 /// USER STATE
 
-IList<String> currentUserOrganizedEventsIdsSel(Store<AppState> store) =>
-    store.state.authState.currentUser == null
-        ? IList()
-        : store.state.usersState.eventsOrganizedByUser[store.state.authState.currentUser!.idUser] ??
-            IList();
+IList<String> currentUserOrganizedEventsIdsSel(Store<AppState> store) => store.state.authState.currentUser == null
+    ? IList()
+    : store.state.usersState.eventsOrganizedByUser[store.state.authState.currentUser!.idUser] ?? IList();
 
 ///
 ///
 /// EVENTS STATE
 
-LoadingStatus eventsLoadingStatusSel(Store<AppState> store) =>
-    store.state.eventsState.feedLoadingStatus;
+LoadingStatus eventsLoadingStatusSel(Store<AppState> store) => store.state.eventsState.feedLoadingStatus;
 
 IMap<String, Event> eventsSel(Store<AppState> store) => store.state.eventsState.events;
 
 Event? eventSel(Store<AppState> store, String id) => store.state.eventsState.events[id];
 
-IList<IMap<DateTime, IList<String>>> eventsFeedSel(Store<AppState> store) =>
-    store.state.eventsState.eventsFeed;
+IList<IMap<DateTime, IList<String>>> eventsFeedSel(Store<AppState> store) => store.state.eventsState.eventsFeed;
 
 final eventsFeedMemoizedSel = createSelector2<Store<AppState>, IMap<String, Event>,
     IList<IMap<DateTime, IList<String>>>, IList<IMap<DateTime, IList<Event>>>>(

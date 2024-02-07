@@ -11,6 +11,10 @@ class SetAuthTokenAction {
   SetAuthTokenAction(this.authToken);
 }
 
+class RemoveAuthTokenAction {
+  RemoveAuthTokenAction();
+}
+
 class SetCurrentUserAction {
   final User currentUser;
 
@@ -21,6 +25,9 @@ class LoginAction {
   final String email;
   final String password;
   LoginAction(this.email, this.password);
+}
+class LogoutAction {
+  LogoutAction();
 }
 
 class LoginWithGoogleAction {

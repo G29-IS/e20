@@ -56,6 +56,7 @@ dependencies:
   tiktoklikescroller: ^0.2.6
   story_view: ^0.16.0
   collection: ^1.18.0
+  google_sign_in: ^6.2.1
 
 dev_dependencies:
   flutter_test:
