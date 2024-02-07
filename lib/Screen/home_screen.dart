@@ -192,6 +192,44 @@ class HomeScreen extends StatelessWidget {
                                                             fontWeight: FontWeight.normal,
                                                           ),
                                                         ),
+                                                        const SizedBox(height: 8),
+                                                        GestureDetector(
+                                                          onTap: () {
+                                                            logSuccess(
+                                                                "GestureDetector: Opening event details for ${event.idEvent}");
+                                                          },
+                                                          child: ElevatedButton(
+                                                            autofocus: true,
+                                                            style: ElevatedButton.styleFrom(
+                                                              backgroundColor: Colors.white12,
+                                                              foregroundColor: Colors.white,
+                                                              shape: RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius.circular(10),
+                                                              ),
+                                                            ),
+                                                            onPressed: () {
+                                                              // TODO: open event details
+                                                              logSuccess(
+                                                                  "Opening event details for ${event.idEvent}");
+                                                            },
+                                                            onLongPress: () {
+                                                              // TODO: open event details
+                                                              logSuccess(
+                                                                  "Opening event details for ${event.idEvent}");
+                                                            },
+                                                            child: const Row(
+                                                              mainAxisSize: MainAxisSize.max,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment.spaceBetween,
+                                                              children: [
+                                                                Text('See details'),
+                                                                SizedBox(width: 8),
+                                                                Icon(Icons.arrow_forward),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
                                                       ],
                                                     ),
                                                   ),
