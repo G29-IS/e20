@@ -62,6 +62,20 @@ class RequestHandler {
     }
   }
 
+  static Future<void> passwordForgotten(String email) async {
+    logWarning("[RH] Into password forgotten");
+
+    var response = await RESTInterface.GET(
+      path: '/password-forgotten?email=$email',
+    );
+
+    if (response.statusCode != 200) {
+      throw ErrorDescription(
+        '[RH ERROR logout]: status code: ${response.statusCode}. body: ${response.data}',
+      );
+    }
+  }
+
   static Future<User> fetchCurrentUser(String? token) async {
     if (token == null) {
       throw ArgumentError.value(token, 'Null token');
@@ -117,7 +131,8 @@ class RequestHandler {
     if (response.statusCode == 200) {
       return response.data;
     } else {
-      throw ErrorDescription('fetchFeed error: status code is ${response.data}');
+      throw ErrorDescription(
+          'fetchFeed error: status code is ${response.data}');
     }
   }
 }

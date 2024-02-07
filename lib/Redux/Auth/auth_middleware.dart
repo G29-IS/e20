@@ -21,6 +21,7 @@ List<Middleware<AppState>> createAuthMiddleware() {
   return [
     TypedMiddleware<AppState, LoginAction>(_login),
     TypedMiddleware<AppState, FetchCurrentUserAction>(_fetchCurrentUser),
+    TypedMiddleware<AppState, PasswordForgottenAction>(_passwordForgotten),
   ];
 }
 
@@ -35,36 +36,6 @@ _login(Store<AppState> store, LoginAction action, NextDispatcher next) async {
   });
 }
 
-_loginWithGoogle(Store<AppState> store, LoginAction action, NextDispatcher next) async {
-  store.dispatch(SetAuthLoadingStatusAction(LoadingStatus.loading));
-
-  // try {
-  //   final _googleSignIn = GoogleSignIn(
-  //     clientId: '440766959100-cv6jcj6r9upc7gho5tj9v0d7nclkpaj9.apps.googleusercontent.com',
-  //     scopes: ['email'],
-  //   );
-
-  //   RequestHandler.login(action.email, action.password).then((value) {
-  //     store.dispatch(SetAuthTokenAction(value));
-  //     store.dispatch(SetAuthLoadingStatusAction(LoadingStatus.success));
-  //   }).catchError((error) {
-  //     logError("[MIDDLEWARE _login] RequestHandler.login: $error");
-  //     store.dispatch(SetAuthLoadingStatusAction(LoadingStatus.error));
-  //   });
-  // } catch (error) {
-  //   logError("[MIDDLEWARE _login] RequestHandler.login: $error");
-  //   store.dispatch(SetAuthLoadingStatusAction(LoadingStatus.error));
-  // }
-
-  // RequestHandler.login(action.email, action.password).then((value) {
-  //   store.dispatch(SetAuthTokenAction(value));
-  //   store.dispatch(SetAuthLoadingStatusAction(LoadingStatus.success));
-  // }).catchError((error) {
-  //   logError("[MIDDLEWARE _login] RequestHandler.login: $error");
-  //   store.dispatch(SetAuthLoadingStatusAction(LoadingStatus.error));
-  // });
-}
-
 _logout(Store<AppState> store, LogoutAction action, NextDispatcher next) {
   store.dispatch(SetAuthLoadingStatusAction(LoadingStatus.loading));
 
@@ -77,7 +48,8 @@ _logout(Store<AppState> store, LogoutAction action, NextDispatcher next) {
   });
 }
 
-_fetchCurrentUser(Store<AppState> store, FetchCurrentUserAction action, NextDispatcher next) async {
+_fetchCurrentUser(Store<AppState> store, FetchCurrentUserAction action,
+    NextDispatcher next) async {
   store.dispatch(SetAuthLoadingStatusAction(LoadingStatus.loading));
 
   RequestHandler.fetchCurrentUser(tokenSel(store)).then((user) {
@@ -85,12 +57,13 @@ _fetchCurrentUser(Store<AppState> store, FetchCurrentUserAction action, NextDisp
 
     RequestHandler.fetchUser(idUser: user.idUser).then((value) {
       logSuccess("[MIDDLEWARE _fetchCurrentUser]: $value");
-      IList<String> eventsOrganizedIds = (value['eventsOrganized'] as List<dynamic>)
-          .map(
-            (e) => (e as Map<String, dynamic>)['idEvent'] as String,
-          )
-          .toList()
-          .lock;
+      IList<String> eventsOrganizedIds =
+          (value['eventsOrganized'] as List<dynamic>)
+              .map(
+                (e) => (e as Map<String, dynamic>)['idEvent'] as String,
+              )
+              .toList()
+              .lock;
       logWarning("eventsOrganizedIds: $eventsOrganizedIds");
 
       store.dispatch(
@@ -117,7 +90,8 @@ _fetchCurrentUser(Store<AppState> store, FetchCurrentUserAction action, NextDisp
       }
       store.dispatch(SetAuthLoadingStatusAction(LoadingStatus.success));
     }).catchError((error) {
-      logError("[MIDDLEWARE _fetchCurrentUser] RequestHandler.fetchUser: $error");
+      logError(
+          "[MIDDLEWARE _fetchCurrentUser] RequestHandler.fetchUser: $error");
       store.dispatch(SetAuthLoadingStatusAction(LoadingStatus.error));
     });
   });
@@ -156,4 +130,16 @@ _fetchCurrentUser(Store<AppState> store, FetchCurrentUserAction action, NextDisp
   // });
 
   // store.dispatch(SetAuthLoadingStatusAction(LoadingStatus.success));
+}
+
+_passwordForgotten(Store<AppState> store, PasswordForgottenAction action,
+    NextDispatcher next) {
+  store.dispatch(SetAuthLoadingStatusAction(LoadingStatus.loading));
+
+  RequestHandler.passwordForgotten(action.email).then((_) {
+    store.dispatch(SetAuthLoadingStatusAction(LoadingStatus.success));
+  }).catchError((error) {
+    logError("[MIDDLEWARE _logout] RequestHandler.logout: $error");
+    store.dispatch(SetAuthLoadingStatusAction(LoadingStatus.error));
+  });
 }

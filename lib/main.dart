@@ -1,3 +1,4 @@
+import 'package:e20/Screen/password_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:go_router/go_router.dart';
@@ -32,8 +33,10 @@ Future<void> main() async {
 final _shellNavigatorLogin = GlobalKey<NavigatorState>(debugLabel: 'login');
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorHome = GlobalKey<NavigatorState>(debugLabel: 'shellHome');
-final _shellNavigatorNewEvent = GlobalKey<NavigatorState>(debugLabel: 'shellNewEvent');
-final _shellNavigatorProfile = GlobalKey<NavigatorState>(debugLabel: 'shellProfile');
+final _shellNavigatorNewEvent =
+    GlobalKey<NavigatorState>(debugLabel: 'shellNewEvent');
+final _shellNavigatorProfile =
+    GlobalKey<NavigatorState>(debugLabel: 'shellProfile');
 
 /// The route configuration.
 final GoRouter _router = GoRouter(
@@ -46,9 +49,15 @@ final GoRouter _router = GoRouter(
         return const LoginScreen();
       },
     ),
+    GoRoute(
+      path: '/password',
+      builder: (BuildContext context, GoRouterState state) {
+        return const PasswordScreen();
+      },
+    ),
     StatefulShellRoute.indexedStack(
-      builder:
-          (BuildContext context, GoRouterState state, StatefulNavigationShell navigationShell) {
+      builder: (BuildContext context, GoRouterState state,
+          StatefulNavigationShell navigationShell) {
         // Return the widget that implements the custom shell (in this case
         // using a BottomNavigationBar). The StatefulNavigationShell is passed
         // to be able access the state of the shell and to navigate to other
@@ -107,7 +116,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp.router(
         title: 'E20',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 30, 215, 96)),
+          colorScheme: ColorScheme.fromSeed(
+              seedColor: const Color.fromARGB(255, 30, 215, 96)),
           useMaterial3: true,
           fontFamily: 'Outfit',
         ),

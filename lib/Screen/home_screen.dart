@@ -17,7 +17,8 @@ import '/Utils/console_log.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-  void _handleCallbackEvent(ScrollDirection direction, ScrollSuccess success, {int? currentIndex}) {
+  void _handleCallbackEvent(ScrollDirection direction, ScrollSuccess success,
+      {int? currentIndex}) {
     logWarning(
         "Scroll callback received with data: {direction: $direction, success: $success and index: ${currentIndex ?? 'not given'}}");
   }
@@ -43,7 +44,8 @@ class HomeScreen extends StatelessWidget {
             body: Builder(builder: (context) {
               switch (vm.loadingStatus) {
                 case LoadingStatus.success:
-                  storyControllers = List.generate(vm.feed.length, (index) => StoryController());
+                  storyControllers = List.generate(
+                      vm.feed.length, (index) => StoryController());
 
                   return Scaffold(
                     backgroundColor: const Color.fromARGB(255, 34, 34, 34),
@@ -73,9 +75,11 @@ class HomeScreen extends StatelessWidget {
                               children: [
                                 /// DATE
                                 Container(
-                                  padding: const EdgeInsets.only(left: 22, right: 22, top: 22),
+                                  padding: const EdgeInsets.only(
+                                      left: 22, right: 22, top: 22),
                                   child: Text(
-                                    DateFormat('EEE dd MMM yy').format(vm.feed[index].keys.first),
+                                    DateFormat('EEE dd MMM yy')
+                                        .format(vm.feed[index].keys.first),
                                     style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 24,
@@ -116,8 +120,10 @@ class HomeScreen extends StatelessWidget {
                                                           event.coverImageUrl,
                                                         ),
                                                         fit: BoxFit.cover,
-                                                        colorFilter: ColorFilter.mode(
-                                                          Colors.black.withOpacity(0.2),
+                                                        colorFilter:
+                                                            ColorFilter.mode(
+                                                          Colors.black
+                                                              .withOpacity(0.2),
                                                           BlendMode.darken,
                                                         ),
                                                       ),
@@ -127,49 +133,77 @@ class HomeScreen extends StatelessWidget {
                                                   Container(
                                                     decoration: BoxDecoration(
                                                       gradient: LinearGradient(
-                                                        begin: FractionalOffset.topCenter,
-                                                        end: FractionalOffset.bottomCenter,
+                                                        begin: FractionalOffset
+                                                            .topCenter,
+                                                        end: FractionalOffset
+                                                            .bottomCenter,
                                                         colors: [
-                                                          Colors.black.withOpacity(0.6),
-                                                          Colors.black.withOpacity(0.1),
-                                                          Colors.black.withOpacity(0.1),
-                                                          Colors.black.withOpacity(0.8),
+                                                          Colors.black
+                                                              .withOpacity(0.6),
+                                                          Colors.black
+                                                              .withOpacity(0.1),
+                                                          Colors.black
+                                                              .withOpacity(0.1),
+                                                          Colors.black
+                                                              .withOpacity(0.8),
                                                         ],
-                                                        stops: const [0.1, 0.2, 0.6, 0.7],
+                                                        stops: const [
+                                                          0.1,
+                                                          0.2,
+                                                          0.6,
+                                                          0.7
+                                                        ],
                                                       ),
                                                     ),
                                                   ),
                                                   Padding(
-                                                    padding: const EdgeInsets.all(22.0),
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            22.0),
                                                     child: Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
                                                       children: [
                                                         Row(
                                                           mainAxisAlignment:
-                                                              MainAxisAlignment.start,
+                                                              MainAxisAlignment
+                                                                  .start,
                                                           crossAxisAlignment:
-                                                              CrossAxisAlignment.center,
+                                                              CrossAxisAlignment
+                                                                  .center,
                                                           children: [
                                                             const Icon(
-                                                              Icons.account_circle,
-                                                              color: Colors.white,
+                                                              Icons
+                                                                  .account_circle,
+                                                              color:
+                                                                  Colors.white,
                                                               size: 32,
                                                             ),
-                                                            const SizedBox(width: 8),
+                                                            const SizedBox(
+                                                                width: 8),
                                                             SizedBox(
-                                                              width: MediaQuery.of(context)
+                                                              width: MediaQuery.of(
+                                                                          context)
                                                                       .size
                                                                       .width *
                                                                   0.6,
                                                               child: Text(
                                                                 // TODO: put name of organizer here
-                                                                event.idOrganizer,
-                                                                style: const TextStyle(
-                                                                  color: Colors.white,
+                                                                event
+                                                                    .idOrganizer,
+                                                                style:
+                                                                    const TextStyle(
+                                                                  color: Colors
+                                                                      .white,
                                                                   fontSize: 18,
-                                                                  fontWeight: FontWeight.normal,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .normal,
                                                                 ),
-                                                                overflow: TextOverflow.ellipsis,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
                                                               ),
                                                             ),
                                                           ],
@@ -177,22 +211,29 @@ class HomeScreen extends StatelessWidget {
                                                         const Spacer(),
                                                         Text(
                                                           event.name,
-                                                          style: const TextStyle(
+                                                          style:
+                                                              const TextStyle(
                                                             color: Colors.white,
                                                             fontSize: 24,
-                                                            fontWeight: FontWeight.bold,
+                                                            fontWeight:
+                                                                FontWeight.bold,
                                                           ),
                                                         ),
-                                                        const SizedBox(height: 8),
+                                                        const SizedBox(
+                                                            height: 8),
                                                         Text(
                                                           '${DateFormat('HH:MM').format(event.openingDateTime)} - ${event.place.name ?? event.place.address}',
-                                                          style: const TextStyle(
+                                                          style:
+                                                              const TextStyle(
                                                             color: Colors.white,
                                                             fontSize: 16,
-                                                            fontWeight: FontWeight.normal,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .normal,
                                                           ),
                                                         ),
-                                                        const SizedBox(height: 8),
+                                                        const SizedBox(
+                                                            height: 8),
                                                         GestureDetector(
                                                           onTap: () {
                                                             logSuccess(
@@ -200,12 +241,20 @@ class HomeScreen extends StatelessWidget {
                                                           },
                                                           child: ElevatedButton(
                                                             autofocus: true,
-                                                            style: ElevatedButton.styleFrom(
-                                                              backgroundColor: Colors.white12,
-                                                              foregroundColor: Colors.white,
-                                                              shape: RoundedRectangleBorder(
+                                                            style:
+                                                                ElevatedButton
+                                                                    .styleFrom(
+                                                              backgroundColor:
+                                                                  Colors
+                                                                      .white12,
+                                                              foregroundColor:
+                                                                  Colors.white,
+                                                              shape:
+                                                                  RoundedRectangleBorder(
                                                                 borderRadius:
-                                                                    BorderRadius.circular(10),
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
                                                               ),
                                                             ),
                                                             onPressed: () {
@@ -219,13 +268,19 @@ class HomeScreen extends StatelessWidget {
                                                                   "Opening event details for ${event.idEvent}");
                                                             },
                                                             child: const Row(
-                                                              mainAxisSize: MainAxisSize.max,
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .max,
                                                               mainAxisAlignment:
-                                                                  MainAxisAlignment.spaceBetween,
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
                                                               children: [
-                                                                Text('See details'),
-                                                                SizedBox(width: 8),
-                                                                Icon(Icons.arrow_forward),
+                                                                Text(
+                                                                    'See details'),
+                                                                SizedBox(
+                                                                    width: 8),
+                                                                Icon(Icons
+                                                                    .arrow_forward),
                                                               ],
                                                             ),
                                                           ),
@@ -235,7 +290,8 @@ class HomeScreen extends StatelessWidget {
                                                   ),
                                                 ],
                                               ),
-                                              duration: const Duration(seconds: 3),
+                                              duration:
+                                                  const Duration(seconds: 3),
                                             ),
                                           )
                                           .toList(),

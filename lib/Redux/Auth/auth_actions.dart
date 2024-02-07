@@ -26,6 +26,12 @@ class LoginAction {
   final String password;
   LoginAction(this.email, this.password);
 }
+
+class PasswordForgottenAction {
+  final String email;
+  PasswordForgottenAction(this.email);
+}
+
 class LogoutAction {
   LogoutAction();
 }

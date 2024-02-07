@@ -56,7 +56,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       decoration: InputDecoration(
                         label: const Text('Email'),
                         hintStyle: const TextStyle(color: Colors.white),
-                        enabled: viewModel.loadingStatus != LoadingStatus.loading,
+                        enabled:
+                            viewModel.loadingStatus != LoadingStatus.loading,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide: const BorderSide(color: Colors.white),
@@ -71,7 +72,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       decoration: InputDecoration(
                         label: const Text('Password'),
                         hintStyle: const TextStyle(color: Colors.white),
-                        enabled: viewModel.loadingStatus != LoadingStatus.loading,
+                        enabled:
+                            viewModel.loadingStatus != LoadingStatus.loading,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide: const BorderSide(color: Colors.white),
@@ -82,52 +84,21 @@ class _LoginScreenState extends State<LoginScreen> {
                     ElevatedButton(
                       onPressed: () {
                         if (validatefields()) {
-                          viewModel.login(emailController.text, passwordController.text);
+                          viewModel.login(
+                              emailController.text, passwordController.text);
                         }
                       },
                       child: viewModel.loadingStatus == LoadingStatus.loading
                           ? const CircularProgressIndicator()
                           : const Text('Login'),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 25),
-                      child: Text('Or', style: TextStyle(color: Colors.white)),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: Colors.white24,
-                        border: Border.all(),
-                      ),
-                      padding: const EdgeInsets.all(12),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            'assets/logos/google_logo.png',
-                            height: 30,
-                            width: 30,
-                          ),
-                          const SizedBox(
-                            width: 12,
-                          ),
-                          Text(
-                            "Login with Google",
-                            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                          ),
-                        ],
-                      ),
-                    ),
                     const Spacer(),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 20),
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          context.go('/password');
+                        },
                         child: const Text(
                           'Forgot your password? Reset it by clicking here.',
                           style: TextStyle(color: Colors.white),
