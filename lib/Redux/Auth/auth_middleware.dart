@@ -5,11 +5,13 @@ import 'package:redux/redux.dart';
 
 import '/Models/enums.dart';
 import '/Models/user.dart';
+import '/Models/event.dart';
 
 import '/Redux/selectors.dart';
 import '/Redux/App/app_state.dart';
 import '/Redux/Auth/auth_actions.dart';
 import '/Redux/Users/users_actions.dart';
+import '/Redux/Events/events_actions.dart';
 
 import '/Services/request_handler.dart';
 import '/Utils/console_log.dart';
@@ -41,20 +43,36 @@ _fetchCurrentUser(Store<AppState> store, FetchCurrentUserAction action, NextDisp
   // RequestHandler.fetchUser(tokenSel(store), idUser: user.idUser)
   RequestHandler.fetchUser(idUser: "bc9e631a-5e19-4885-ac01-1a3c48ffe9d3").then((value) {
     logSuccess("[MIDDLEWARE _fetchCurrentUser]: $value");
+    IList<String> eventsOrganizedIds = (value['eventsOrganized'] as List<dynamic>)
+        .map(
+          (e) => (e as Map<String, dynamic>)['idEvent'] as String,
+        )
+        .toList()
+        .lock;
+    logWarning("eventsOrganizedIds: $eventsOrganizedIds");
+
     store.dispatch(
       SetCurrentUserAction(User.fromMap(value['user'])),
     );
     store.dispatch(
       SetCurrentUserOrganizedEventsIdsAction(
         "bc9e631a-5e19-4885-ac01-1a3c48ffe9d3",
-        (value['eventsOrganized'] as List<dynamic>)
-            .map(
-              (e) => (e as Map<String, dynamic>)['idEvent'] as String,
-            )
-            .toList()
-            .lock,
+        eventsOrganizedIds,
       ),
     );
+
+    if (value['eventsOrganized'] != null) {
+      store.dispatch(AddEventsToStateAction(
+        IMap.fromEntries(
+          (value['eventsOrganized'] as List<dynamic>).map(
+            (e) => MapEntry(
+              (e as Map<String, dynamic>)['idEvent'] as String,
+              Event.fromMap(e),
+            ),
+          ),
+        ),
+      ));
+    }
     store.dispatch(SetAuthLoadingStatusAction(LoadingStatus.success));
   }).catchError((error) {
     logError("[MIDDLEWARE _fetchCurrentUser] RequestHandler.fetchUser: $error");

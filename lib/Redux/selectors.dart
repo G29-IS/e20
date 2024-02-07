@@ -17,11 +17,17 @@ String? tokenSel(Store<AppState> store) => store.state.authState.authToken;
 LoadingStatus authLoadingStatusSel(Store<AppState> store) =>
     store.state.authState.authLoadingStatus;
 
+User? currentUserSel(Store<AppState> store) => store.state.authState.currentUser;
+
 ///
 ///
 /// USER STATE
 
-User? currentUserSel(Store<AppState> store) => store.state.authState.currentUser;
+IList<String> currentUserOrganizedEventsIdsSel(Store<AppState> store) =>
+    store.state.authState.currentUser == null
+        ? IList()
+        : store.state.usersState.eventsOrganizedByUser[store.state.authState.currentUser!.idUser] ??
+            IList();
 
 ///
 ///

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart' show immutable;
 import 'package:redux/redux.dart';
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 
 import '/Models/enums.dart';
 import '/Models/user.dart';
@@ -15,9 +16,12 @@ class CurrentProfileViewModel {
 
   final User user;
 
+  final IList<String> organizedEventsIds;
+
   const CurrentProfileViewModel({
     required this.loadingStatus,
     required this.user,
+    required this.organizedEventsIds,
   });
 
   factory CurrentProfileViewModel.create(Store<AppState> store) {
@@ -26,6 +30,7 @@ class CurrentProfileViewModel {
     return CurrentProfileViewModel(
       loadingStatus: authLoadingStatusSel(store),
       user: currentUserSel(store) ?? User.empty(),
+      organizedEventsIds: currentUserOrganizedEventsIdsSel(store),
     );
   }
 
