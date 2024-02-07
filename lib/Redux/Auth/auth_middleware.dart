@@ -26,7 +26,6 @@ List<Middleware<AppState>> createAuthMiddleware() {
 
 _login(Store<AppState> store, LoginAction action, NextDispatcher next) async {
   store.dispatch(SetAuthLoadingStatusAction(LoadingStatus.loading));
-
   RequestHandler.login(action.email, action.password).then((value) {
     store.dispatch(SetAuthTokenAction(value));
     store.dispatch(SetAuthLoadingStatusAction(LoadingStatus.success));
@@ -99,7 +98,7 @@ _fetchCurrentUser(Store<AppState> store, FetchCurrentUserAction action, NextDisp
       );
       store.dispatch(
         SetCurrentUserOrganizedEventsIdsAction(
-          "bc9e631a-5e19-4885-ac01-1a3c48ffe9d3",
+          user.idUser,
           eventsOrganizedIds,
         ),
       );

@@ -40,16 +40,15 @@ final GoRouter _router = GoRouter(
   navigatorKey: _rootNavigatorKey,
   initialLocation: '/home',
   routes: <RouteBase>[
-    ShellRoute(routes: [
-      GoRoute(
-        path: '/login',
-        builder: (BuildContext context, GoRouterState state) {
-          return const LoginScreen();
-        },
-      ),
-    ]),
+    GoRoute(
+      path: '/login',
+      builder: (BuildContext context, GoRouterState state) {
+        return const LoginScreen();
+      },
+    ),
     StatefulShellRoute.indexedStack(
-      builder: (BuildContext context, GoRouterState state, StatefulNavigationShell navigationShell) {
+      builder:
+          (BuildContext context, GoRouterState state, StatefulNavigationShell navigationShell) {
         // Return the widget that implements the custom shell (in this case
         // using a BottomNavigationBar). The StatefulNavigationShell is passed
         // to be able access the state of the shell and to navigate to other
@@ -89,12 +88,6 @@ final GoRouter _router = GoRouter(
               path: '/profile',
               builder: (BuildContext context, GoRouterState state) {
                 return const ProfileScreen();
-              },
-            ),
-            GoRoute(
-              path: '/login',
-              builder: (BuildContext context, GoRouterState state) {
-                return const LoginScreen();
               },
             ),
           ],

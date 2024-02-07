@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class NewEventScreen extends StatelessWidget {
   const NewEventScreen({super.key});
@@ -24,6 +25,12 @@ class NewEventScreen extends StatelessWidget {
                       fontSize: 24,
                     ),
                   ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    context.go('/login');
+                  },
+                  child: const Text('Log in'),
                 ),
                 const SizedBox(height: 15),
                 TextField(

@@ -18,19 +18,30 @@ class CurrentProfileViewModel {
 
   final IList<String> organizedEventsIds;
 
+  final Function(
+    String username,
+    String password,
+  ) login;
+
   const CurrentProfileViewModel({
     required this.loadingStatus,
     required this.user,
     required this.organizedEventsIds,
+    required this.login,
   });
 
   factory CurrentProfileViewModel.create(Store<AppState> store) {
     logWarning("CurrentPRofileViewModel.create(store) called: ${currentUserSel(store)}");
 
+    _login(String username, String password) {
+      store.dispatch((username, password));
+    }
+
     return CurrentProfileViewModel(
       loadingStatus: authLoadingStatusSel(store),
       user: currentUserSel(store) ?? User.empty(),
       organizedEventsIds: currentUserOrganizedEventsIdsSel(store),
+      login: _login,
     );
   }
 
