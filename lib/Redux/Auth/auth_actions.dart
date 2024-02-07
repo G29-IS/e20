@@ -26,6 +26,7 @@ class LoginAction {
   final String password;
   LoginAction(this.email, this.password);
 }
+
 class LogoutAction {
   LogoutAction();
 }

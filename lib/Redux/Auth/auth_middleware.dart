@@ -20,6 +20,7 @@ import '/Utils/console_log.dart';
 List<Middleware<AppState>> createAuthMiddleware() {
   return [
     TypedMiddleware<AppState, LoginAction>(_login),
+    TypedMiddleware<AppState, LogoutAction>(_logout),
     TypedMiddleware<AppState, FetchCurrentUserAction>(_fetchCurrentUser),
   ];
 }
@@ -67,7 +68,6 @@ _loginWithGoogle(Store<AppState> store, LoginAction action, NextDispatcher next)
 
 _logout(Store<AppState> store, LogoutAction action, NextDispatcher next) {
   store.dispatch(SetAuthLoadingStatusAction(LoadingStatus.loading));
-
   RequestHandler.logout().then((_) {
     store.dispatch(RemoveAuthTokenAction());
     store.dispatch(SetAuthLoadingStatusAction(LoadingStatus.success));
@@ -135,7 +135,6 @@ _fetchCurrentUser(Store<AppState> store, FetchCurrentUserAction action, NextDisp
   //     store.dispatch(SetCurrentUserAction(user));
 
   //     // I use this endpoint to fetch the user's organized events
-  //     /// TODO: REMOVE AFTER LOGIN IMPLEMENTATION
   //     // RequestHandler.fetchUser(tokenSel(store), idUser: user.idUser)
   //     RequestHandler.fetchUser(tokenSel(store), idUser: "bc9e631a-5e19-4885-ac01-1a3c48ffe9d3")
   //         .then((value) {

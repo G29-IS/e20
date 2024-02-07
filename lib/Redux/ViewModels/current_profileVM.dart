@@ -7,6 +7,7 @@ import '/Models/user.dart';
 
 import '/Redux/App/app_state.dart';
 import '/Redux/selectors.dart';
+import '/Redux/Auth/auth_actions.dart';
 
 import '/Utils/console_log.dart';
 
@@ -23,18 +24,25 @@ class CurrentProfileViewModel {
     String password,
   ) login;
 
+  final Function logout;
+
   const CurrentProfileViewModel({
     required this.loadingStatus,
     required this.user,
     required this.organizedEventsIds,
     required this.login,
+    required this.logout,
   });
 
   factory CurrentProfileViewModel.create(Store<AppState> store) {
     logWarning("CurrentPRofileViewModel.create(store) called: ${currentUserSel(store)}");
 
     _login(String username, String password) {
-      store.dispatch((username, password));
+      store.dispatch(LoginAction(username, password));
+    }
+
+    _logout() {
+      store.dispatch(LogoutAction());
     }
 
     return CurrentProfileViewModel(
@@ -42,6 +50,7 @@ class CurrentProfileViewModel {
       user: currentUserSel(store) ?? User.empty(),
       organizedEventsIds: currentUserOrganizedEventsIdsSel(store),
       login: _login,
+      logout: _logout,
     );
   }
 
@@ -49,9 +58,12 @@ class CurrentProfileViewModel {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is CurrentProfileViewModel && other.user == user;
+    return other is CurrentProfileViewModel &&
+        other.loadingStatus == loadingStatus &&
+        other.user == user &&
+        other.organizedEventsIds == organizedEventsIds;
   }
 
   @override
-  int get hashCode => user.hashCode;
+  int get hashCode => loadingStatus.hashCode ^ user.hashCode ^ organizedEventsIds.hashCode;
 }
