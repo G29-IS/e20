@@ -26,12 +26,6 @@ class NewEventScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    context.go('/login');
-                  },
-                  child: const Text('Log in'),
-                ),
                 const SizedBox(height: 15),
                 TextField(
                   decoration: InputDecoration(

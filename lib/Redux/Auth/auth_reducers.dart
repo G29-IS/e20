@@ -19,7 +19,7 @@ AuthState _setAuthToken(AuthState state, SetAuthTokenAction action) {
 }
 
 AuthState _removeAuthToken(AuthState state, RemoveAuthTokenAction action) {
-  return state.copyWith(authToken: null);
+  return state.copyWithNullStrict(authToken: null);
 }
 
 AuthState _setCurrentUser(AuthState state, SetCurrentUserAction action) {

@@ -107,9 +107,7 @@ class ProfileScreen extends StatelessWidget {
                                   padding: const EdgeInsets.symmetric(vertical: 20),
                                   child: Center(
                                     child: ElevatedButton(
-                                      onPressed: () {
-                                        store.dispatch(LogoutAction());
-                                      },
+                                      onPressed: () => viewModel.logout(),
                                       child: const Text('Log out'),
                                     ),
                                   ),
