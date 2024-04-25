@@ -1,4 +1,3 @@
-import 'package:e20/Screen/password_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:go_router/go_router.dart';
@@ -9,9 +8,11 @@ import 'package:e20/firebase_options.dart';
 import '/Redux/store.dart';
 
 import '/Screen/home_screen.dart';
+import '/Screen/event_details_screen.dart';
 import '/Screen/new_event_screen.dart';
 import '/Screen/profile_screen.dart';
 import '/Screen/login_screen.dart';
+import '/Screen/password_screen.dart';
 
 import '/Utils/console_log.dart';
 
@@ -33,10 +34,8 @@ Future<void> main() async {
 final _shellNavigatorLogin = GlobalKey<NavigatorState>(debugLabel: 'login');
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorHome = GlobalKey<NavigatorState>(debugLabel: 'shellHome');
-final _shellNavigatorNewEvent =
-    GlobalKey<NavigatorState>(debugLabel: 'shellNewEvent');
-final _shellNavigatorProfile =
-    GlobalKey<NavigatorState>(debugLabel: 'shellProfile');
+final _shellNavigatorNewEvent = GlobalKey<NavigatorState>(debugLabel: 'shellNewEvent');
+final _shellNavigatorProfile = GlobalKey<NavigatorState>(debugLabel: 'shellProfile');
 
 /// The route configuration.
 final GoRouter _router = GoRouter(
@@ -55,9 +54,16 @@ final GoRouter _router = GoRouter(
         return const PasswordScreen();
       },
     ),
+    // Screen details
+    GoRoute(
+      path: '/event/:idEvent',
+      builder: (BuildContext context, GoRouterState state) {
+        return const EventDetailsScreen();
+      },
+    ),
     StatefulShellRoute.indexedStack(
-      builder: (BuildContext context, GoRouterState state,
-          StatefulNavigationShell navigationShell) {
+      builder:
+          (BuildContext context, GoRouterState state, StatefulNavigationShell navigationShell) {
         // Return the widget that implements the custom shell (in this case
         // using a BottomNavigationBar). The StatefulNavigationShell is passed
         // to be able access the state of the shell and to navigate to other
@@ -117,7 +123,8 @@ class MyApp extends StatelessWidget {
         title: 'E20',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
-              seedColor: const Color.fromARGB(255, 30, 215, 96)),
+            seedColor: const Color.fromARGB(255, 30, 215, 96),
+          ),
           useMaterial3: true,
           fontFamily: 'Outfit',
         ),

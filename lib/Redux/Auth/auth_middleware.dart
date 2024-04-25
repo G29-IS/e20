@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:redux/redux.dart';
@@ -31,6 +33,9 @@ _login(Store<AppState> store, LoginAction action, NextDispatcher next) async {
   RequestHandler.login(action.email, action.password).then((value) {
     store.dispatch(SetAuthTokenAction(value));
     store.dispatch(SetAuthLoadingStatusAction(LoadingStatus.success));
+
+    // final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+    GoRouter.of(action.context).go('/profile');
   }).catchError((error) {
     logError("[MIDDLEWARE _login] RequestHandler.login: $error");
     store.dispatch(SetAuthLoadingStatusAction(LoadingStatus.error));
@@ -48,8 +53,7 @@ _logout(Store<AppState> store, LogoutAction action, NextDispatcher next) {
   });
 }
 
-_fetchCurrentUser(Store<AppState> store, FetchCurrentUserAction action,
-    NextDispatcher next) async {
+_fetchCurrentUser(Store<AppState> store, FetchCurrentUserAction action, NextDispatcher next) async {
   store.dispatch(SetAuthLoadingStatusAction(LoadingStatus.loading));
 
   RequestHandler.fetchCurrentUser(tokenSel(store)).then((user) {
@@ -57,13 +61,12 @@ _fetchCurrentUser(Store<AppState> store, FetchCurrentUserAction action,
 
     RequestHandler.fetchUser(idUser: user.idUser).then((value) {
       logSuccess("[MIDDLEWARE _fetchCurrentUser]: $value");
-      IList<String> eventsOrganizedIds =
-          (value['eventsOrganized'] as List<dynamic>)
-              .map(
-                (e) => (e as Map<String, dynamic>)['idEvent'] as String,
-              )
-              .toList()
-              .lock;
+      IList<String> eventsOrganizedIds = (value['eventsOrganized'] as List<dynamic>)
+          .map(
+            (e) => (e as Map<String, dynamic>)['idEvent'] as String,
+          )
+          .toList()
+          .lock;
       logWarning("eventsOrganizedIds: $eventsOrganizedIds");
 
       store.dispatch(
@@ -90,8 +93,7 @@ _fetchCurrentUser(Store<AppState> store, FetchCurrentUserAction action,
       }
       store.dispatch(SetAuthLoadingStatusAction(LoadingStatus.success));
     }).catchError((error) {
-      logError(
-          "[MIDDLEWARE _fetchCurrentUser] RequestHandler.fetchUser: $error");
+      logError("[MIDDLEWARE _fetchCurrentUser] RequestHandler.fetchUser: $error");
       store.dispatch(SetAuthLoadingStatusAction(LoadingStatus.error));
     });
   });
@@ -131,8 +133,7 @@ _fetchCurrentUser(Store<AppState> store, FetchCurrentUserAction action,
   // store.dispatch(SetAuthLoadingStatusAction(LoadingStatus.success));
 }
 
-_passwordForgotten(Store<AppState> store, PasswordForgottenAction action,
-    NextDispatcher next) {
+_passwordForgotten(Store<AppState> store, PasswordForgottenAction action, NextDispatcher next) {
   store.dispatch(SetAuthLoadingStatusAction(LoadingStatus.loading));
 
   RequestHandler.passwordForgotten(action.email).then((_) {

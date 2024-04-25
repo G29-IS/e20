@@ -1,5 +1,6 @@
 import 'package:e20/Redux/Auth/auth_actions.dart';
 import 'package:flutter/foundation.dart' show immutable;
+import 'package:flutter/widgets.dart';
 import 'package:redux/redux.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 
@@ -25,6 +26,7 @@ class CurrentProfileViewModel {
   final Function(
     String username,
     String password,
+    BuildContext context,
   ) login;
 
   final Function logout;
@@ -39,11 +41,10 @@ class CurrentProfileViewModel {
   });
 
   factory CurrentProfileViewModel.create(Store<AppState> store) {
-    logWarning(
-        "CurrentPRofileViewModel.create(store) called: ${currentUserSel(store)}");
+    logWarning("CurrentPRofileViewModel.create(store) called: ${currentUserSel(store)}");
 
-    _login(String username, String password) {
-      store.dispatch(LoginAction(username, password));
+    _login(String username, String password, BuildContext context) {
+      store.dispatch(LoginAction(username, password, context));
     }
 
     _logout() {

@@ -33,8 +33,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
           return Scaffold(
             backgroundColor: const Color.fromARGB(255, 34, 34, 34),
             appBar: AppBar(
-              title: const Text('Password dimenticata',
-                  style: TextStyle(color: Colors.white)),
+              title: const Text('Password dimenticata', style: TextStyle(color: Colors.white)),
               backgroundColor: const Color.fromARGB(255, 34, 34, 34),
               automaticallyImplyLeading: false,
               leading: IconButton(
@@ -54,11 +53,11 @@ class _PasswordScreenState extends State<PasswordScreen> {
                     const SizedBox(height: 30),
                     TextField(
                       controller: emailController,
+                      style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
                         label: const Text('Email'),
                         hintStyle: const TextStyle(color: Colors.white),
-                        enabled:
-                            viewModel.loadingStatus != LoadingStatus.loading,
+                        enabled: viewModel.loadingStatus != LoadingStatus.loading,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide: const BorderSide(color: Colors.white),
@@ -82,9 +81,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
                                 actions: <Widget>[
                                   TextButton(
                                     style: TextButton.styleFrom(
-                                      textStyle: Theme.of(context)
-                                          .textTheme
-                                          .labelLarge,
+                                      textStyle: Theme.of(context).textTheme.labelLarge,
                                     ),
                                     child: const Text('Ok'),
                                     onPressed: () {

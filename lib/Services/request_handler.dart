@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart' show ErrorDescription;
 
+import '/Models/event.dart';
 import '/Models/user.dart';
-
-import '/Utils/console_log.dart';
 import '/Services/api_interface.dart';
+import '/Utils/console_log.dart';
 
 class RequestHandler {
   ///
@@ -88,7 +88,7 @@ class RequestHandler {
 
       if (response.statusCode == 200 && response.data != null) {
         logSuccess("[RH fetchCurrentUser]: ${response.data.toString()}");
-        return User.fromJson(response.data);
+        return User.fromMap(response.data);
       } else {
         throw ErrorDescription(
           '[RH ERROR fetchCurrentUser]: status code: ${response.statusCode}. body: ${response.data}',
@@ -131,8 +131,26 @@ class RequestHandler {
     if (response.statusCode == 200) {
       return response.data;
     } else {
+      throw ErrorDescription('fetchFeed error: status code is ${response.data}');
+    }
+  }
+
+  static Future<dynamic> createNewEvent(Event event, String token) async {
+    logWarning("[RH] Post event");
+
+    var response = await RESTInterface.POST(
+      path: '/events',
+      body: event.toMap(),
+      headers: {'Authorization': 'Bearer $token'},
+    );
+
+    if (response.statusCode == 200 && response.data != null) {
+      logSuccess("[RH create event]: created event - ${response.data.toString()}");
+      return response.data;
+    } else {
       throw ErrorDescription(
-          'fetchFeed error: status code is ${response.data}');
+        '[RH ERROR create event]: status code: ${response.statusCode}. body: ${response.data}',
+      );
     }
   }
 }
