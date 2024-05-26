@@ -3,15 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:go_router/go_router.dart';
 
-import '/Models/enums.dart';
 
-import '/Redux/store.dart';
 import '/Redux/App/app_state.dart';
-import '/Redux/selectors.dart';
-import '/Redux/Auth/auth_actions.dart';
-import '/Redux/ViewModels/current_profileVM.dart';
 
-import '/Widget/event_small_card.dart';
 
 class EventDetailsScreen extends StatelessWidget {
   const EventDetailsScreen({super.key});

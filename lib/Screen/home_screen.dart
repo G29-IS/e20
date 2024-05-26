@@ -10,7 +10,6 @@ import '/Models/enums.dart';
 import '/Redux/App/app_state.dart';
 import '/Redux/Events/events_actions.dart';
 import '/Redux/ViewModels/homeVM.dart';
-import '/Redux/store.dart';
 import '/Utils/console_log.dart';
 
 class HomeScreen extends StatelessWidget {

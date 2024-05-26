@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:math';
-
 import 'package:redux/redux.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:go_router/go_router.dart';
@@ -8,7 +5,6 @@ import 'package:collection/collection.dart';
 
 import '/Models/enums.dart';
 import '/Models/event.dart';
-import '/Models/event_place.dart';
 
 import '/Redux/App/app_state.dart';
 import '/Redux/selectors.dart';
@@ -24,21 +20,25 @@ List<Middleware<AppState>> createEventsMiddleware() {
   ];
 }
 
-_createNewEvent(Store<AppState> store, CreateNewEventAction action, NextDispatcher next) async {
+_createNewEvent(Store<AppState> store, CreateNewEventAction action,
+    NextDispatcher next) async {
   store.dispatch(SetEventsLoadingStatusAction(LoadingStatus.loading));
   RequestHandler.createNewEvent(action.event, tokenSel(store)!).then((value) {
     store.dispatch(SetEventsLoadingStatusAction(LoadingStatus.success));
     GoRouter.of(action.context).go('/home');
   }).catchError((error) {
-    logError("[MIDDLEWARE _createNewEvent] RequestHandler.createNewEvent: $error");
+    logError(
+        "[MIDDLEWARE _createNewEvent] RequestHandler.createNewEvent: $error");
     store.dispatch(SetEventsLoadingStatusAction(LoadingStatus.error));
   });
 }
 
-_fetchEvents(Store<AppState> store, FetchEventsAction action, NextDispatcher next) async {
+_fetchEvents(Store<AppState> store, FetchEventsAction action,
+    NextDispatcher next) async {
   store.dispatch(SetEventsLoadingStatusAction(LoadingStatus.loading));
   RequestHandler.fetchFeed().then((rawEvents) {
-    IList<Event> parsedEvents = rawEvents.map((element) => Event.fromMap(element)).toIList();
+    IList<Event> parsedEvents =
+        rawEvents.map((element) => Event.fromMap(element)).toIList();
 
     IMap<String, Event> events = {
       for (var event in parsedEvents) event.idEvent: event,
@@ -46,9 +46,10 @@ _fetchEvents(Store<AppState> store, FetchEventsAction action, NextDispatcher nex
 
     IList<IMap<DateTime, IList<String>>> eventsFeed = [
       (groupBy(parsedEvents, (event) {
-        return event.openingDateTime
-            .copyWith(hour: 0, minute: 0, second: 0, millisecond: 0, microsecond: 0);
-      }).map((key, value) => MapEntry(key, value.map((e) => e.idEvent).toIList()))).toIMap()
+        return event.openingDateTime.copyWith(
+            hour: 0, minute: 0, second: 0, millisecond: 0, microsecond: 0);
+      }).map((key, value) =>
+          MapEntry(key, value.map((e) => e.idEvent).toIList()))).toIMap()
     ].lock;
 
     store.dispatch(AddEventsToStateAction(events));

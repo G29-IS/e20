@@ -82,7 +82,8 @@ class Event {
     result.addAll({'idOrganizer': idOrganizer});
     result.addAll({'description': description});
     result.addAll({'place': place.toMap()});
-    result.addAll({'doorOpeningDateTime': doorOpeningDateTime.toIso8601String()});
+    result
+        .addAll({'doorOpeningDateTime': doorOpeningDateTime.toIso8601String()});
     result.addAll({'openingDateTime': openingDateTime.toIso8601String()});
     result.addAll({'type': type.name});
     if (maxParticipants != null) {
@@ -108,11 +109,14 @@ class Event {
       place: EventPlace.fromMap(map['place']),
       doorOpeningDateTime: DateTime.parse(map['doorOpeningDateTime']),
       openingDateTime: DateTime.parse(map['openingDateTime']),
-      type: EventType.values.byName(map['type'].toString().toLowerCase()),
+      type: EventType.BAR,
+      visibility: EventVisibility.PUBLIC,
+      availability: EventAvailability.AVAILABLE, // TODO: use enums
+      // type: EventType.values.byName(map['type'].toString()),
       maxParticipants: map['maxParticipants']?.toInt(),
-      visibility: EventVisibility.values.byName(map['visibility'].toString().toLowerCase()),
+      // visibility: EventVisibility.values.byName(map['visibility'].toString()),
       paymentLink: map['paymentLink'],
-      availability: EventAvailability.values.byName(map['availability'].toString().toLowerCase()),
+      // availability: EventAvailability.values.byName(map['availability'].toString()),
       isModified: map['isModified'] ?? false,
     );
   }

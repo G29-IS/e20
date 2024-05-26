@@ -41,7 +41,7 @@ class User {
       email: '',
       passwordHash: '',
       phone: '',
-      gender: Gender.other,
+      gender: Gender.OTHER,
       cityOfInterest: '',
       profileImageUrl: '',
       birthDate: DateTime.now(),
@@ -102,7 +102,7 @@ class User {
       passwordHash: map['passwordHash'],
       phone: map['phone'] ?? '',
       birthDate: DateTime.parse(map['birthDate']),
-      gender: Gender.values.byName(map['gender'].toString().toLowerCase()),
+      gender: Gender.values.byName(map['gender'].toString()),
       cityOfInterest: map['cityOfInterest'] ?? '',
       profileImageUrl: map['profileImageUrl'] ?? '',
     );

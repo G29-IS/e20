@@ -31,6 +31,7 @@ class ProfileScreen extends StatelessWidget {
                       color: Colors.white,
                       fontSize: 24,
                     ),
+                    textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
@@ -71,18 +72,21 @@ class ProfileScreen extends StatelessWidget {
                                             child: Icon(
                                               Icons.person,
                                               size: 50,
-                                              color: const Color.fromARGB(255, 34, 34, 34),
+                                              color: const Color.fromARGB(
+                                                  255, 34, 34, 34),
                                             ),
                                           )
                                         : CircleAvatar(
                                             radius: 50,
-                                            backgroundImage:
-                                                NetworkImage(viewModel.user.profileImageUrl),
+                                            backgroundImage: NetworkImage(
+                                                viewModel.user.profileImageUrl),
                                           ),
                                     const SizedBox(width: 17),
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
                                           viewModel.user.username,
@@ -104,7 +108,8 @@ class ProfileScreen extends StatelessWidget {
                                   ],
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 20),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 20),
                                   child: Center(
                                     child: ElevatedButton(
                                       onPressed: () => viewModel.logout(),
@@ -122,7 +127,8 @@ class ProfileScreen extends StatelessWidget {
                                           ),
                                         )
                                       : Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             const Text(
                                               'Events you have organized:',
@@ -131,8 +137,10 @@ class ProfileScreen extends StatelessWidget {
                                                 fontSize: 24,
                                               ),
                                             ),
-                                            ...viewModel.organizedEventsIds.map((id) =>
-                                                EventSmallCard(event: eventSel(store, id)!)),
+                                            ...viewModel.organizedEventsIds.map(
+                                                (id) => EventSmallCard(
+                                                    event:
+                                                        eventSel(store, id)!)),
                                           ],
                                         ),
                                 ),

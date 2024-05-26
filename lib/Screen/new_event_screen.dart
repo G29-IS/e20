@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 import '/Models/enums.dart';
 import '/Models/event.dart';
@@ -140,9 +139,9 @@ class _NewEventScreenState extends State<NewEventScreen> {
                           Event(
                             idEvent: '',
                             idOrganizer: '',
-                            visibility: EventVisibility.public,
-                            availability: EventAvailability.available,
-                            type: EventType.concert,
+                            visibility: EventVisibility.PUBLIC,
+                            availability: EventAvailability.AVAILABLE,
+                            type: EventType.CONCERT,
                             name: nameController.text,
                             description: descriptionController.text,
                             coverImageUrl: coverImageUrlController.text,

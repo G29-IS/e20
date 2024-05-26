@@ -1,9 +1,5 @@
-import 'dart:math';
-
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:redux/redux.dart';
 
 import '/Models/enums.dart';
