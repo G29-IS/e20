@@ -107,6 +107,8 @@ class HomeScreen extends StatelessWidget {
                                             (event) => StoryItem(
                                               Stack(
                                                 children: [
+                                                  // TextButton(
+                                                  //     onPressed: () {}, child: Text("test")),
                                                   Container(
                                                     decoration: BoxDecoration(
                                                       image: DecorationImage(
@@ -216,7 +218,7 @@ class HomeScreen extends StatelessWidget {
                                                             mainAxisAlignment:
                                                                 MainAxisAlignment.spaceBetween,
                                                             children: [
-                                                              Text('See details'),
+                                                              Text('Long press to see details'),
                                                               SizedBox(width: 8),
                                                               Icon(Icons.arrow_forward),
                                                             ],

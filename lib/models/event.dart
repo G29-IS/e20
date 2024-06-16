@@ -82,8 +82,7 @@ class Event {
     result.addAll({'idOrganizer': idOrganizer});
     result.addAll({'description': description});
     result.addAll({'place': place.toMap()});
-    result
-        .addAll({'doorOpeningDateTime': doorOpeningDateTime.toIso8601String()});
+    result.addAll({'doorOpeningDateTime': doorOpeningDateTime.toIso8601String()});
     result.addAll({'openingDateTime': openingDateTime.toIso8601String()});
     result.addAll({'type': type.name});
     if (maxParticipants != null) {

@@ -19,11 +19,13 @@ class EventSmallCard extends StatelessWidget {
         },
         child: Card(
           color: Colors.white10,
-          margin: const EdgeInsets.symmetric(vertical: 10),
+          margin: const EdgeInsets.symmetric(
+            vertical: 10,
+          ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
-          clipBehavior: Clip.hardEdge,
+          clipBehavior: Clip.antiAlias,
           child: Padding(
             padding: const EdgeInsets.all(15),
             child: Row(
@@ -40,29 +42,31 @@ class EventSmallCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 20),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      event.name,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 10),
-                    Container(
-                      child: Text(
-                        '${DateFormat('EEE, d MMM y - HH:MM').format(event.openingDateTime)}\n${event.place.name ?? event.place.address}',
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        event.name,
                         style: const TextStyle(
                           color: Colors.white,
-                          fontSize: 14,
+                          fontSize: 18,
                         ),
-                        overflow: TextOverflow.fade,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 10),
+                      Container(
+                        child: Text(
+                          '${DateFormat('EEE, d MMM y - HH:MM').format(event.openingDateTime)}\n${event.place.name ?? event.place.address}',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                          ),
+                          overflow: TextOverflow.fade,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

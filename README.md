@@ -1,10 +1,10 @@
 # e20
 
 ### TODO
-- [ ] fix clicking on an event to view details
+- [x] fix clicking on an event to view details
 - [ ] fix that not all events pop up?
-- [ ] event impagination
-  - [ ] google maps button
-  - [ ] payment link button
-- [ ] connect event creation page to APIs and test
-- [ ] fix profile layout on small screens
+- [x] event impagination
+  - [NO] google maps button
+  - [NO] payment link button
+- [x] connect event creation page to APIs and test
+- [x] fix profile layout on small screens
