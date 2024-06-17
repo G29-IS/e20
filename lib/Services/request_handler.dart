@@ -121,7 +121,7 @@ class RequestHandler {
   ///
   /// EVENTS STATE
 
-  static Future<List<dynamic>> fetchFeed() async {
+  static Future<Map<String, dynamic>> fetchFeed() async {
     var response = await RESTInterface.GET(
       path: '/events',
     );
@@ -129,8 +129,7 @@ class RequestHandler {
     if (response.statusCode == 200) {
       return response.data;
     } else {
-      throw ErrorDescription(
-          'fetchFeed error: status code is ${response.data}');
+      throw ErrorDescription('fetchFeed error: status code is ${response.data}');
     }
   }
 
@@ -144,8 +143,7 @@ class RequestHandler {
     );
 
     if (response.statusCode == 200 && response.data != null) {
-      logSuccess(
-          "[RH create event]: created event - ${response.data.toString()}");
+      logSuccess("[RH create event]: created event - ${response.data.toString()}");
       return response.data;
     } else {
       throw ErrorDescription(

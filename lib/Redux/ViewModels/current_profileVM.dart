@@ -1,4 +1,5 @@
-import 'package:e20/Redux/Auth/auth_actions.dart';
+// ignore_for_file: file_names
+
 import 'package:flutter/widgets.dart';
 import 'package:redux/redux.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
@@ -8,6 +9,7 @@ import '/Models/user.dart';
 
 import '/Redux/App/app_state.dart';
 import '/Redux/selectors.dart';
+import '/Redux/Auth/auth_actions.dart';
 
 import '/Utils/console_log.dart';
 

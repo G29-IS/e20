@@ -7,6 +7,9 @@ import 'package:story_view/widgets/story_view.dart';
 import 'package:tiktoklikescroller/tiktoklikescroller.dart';
 
 import '/Models/enums.dart';
+
+import '/Redux/store.dart';
+import '/Redux/selectors.dart';
 import '/Redux/App/app_state.dart';
 import '/Redux/Events/events_actions.dart';
 import '/Redux/ViewModels/homeVM.dart';
@@ -34,6 +37,7 @@ class HomeScreen extends StatelessWidget {
         store.dispatch(FetchEventsAction());
       },
       converter: (store) => HomeViewModel.create(store),
+      distinct: true,
       builder: (context, vm) {
         return Scaffold(
             backgroundColor: const Color.fromARGB(255, 34, 34, 34),
@@ -62,6 +66,8 @@ class HomeScreen extends StatelessWidget {
                               child: Text('No events available',
                                   style: TextStyle(color: Colors.white)));
                         } else {
+                          // return Container(
+                          //     color: Colors.primaries[index % Colors.primaries.length],
                           return SafeArea(
                             top: true,
                             bottom: true,
@@ -107,8 +113,7 @@ class HomeScreen extends StatelessWidget {
                                             (event) => StoryItem(
                                               Stack(
                                                 children: [
-                                                  // TextButton(
-                                                  //     onPressed: () {}, child: Text("test")),
+                                                  /// BACKGROUND IMAGE
                                                   Container(
                                                     decoration: BoxDecoration(
                                                       image: DecorationImage(
@@ -124,6 +129,8 @@ class HomeScreen extends StatelessWidget {
                                                       color: Colors.grey[850],
                                                     ),
                                                   ),
+
+                                                  /// GRADIENT
                                                   Container(
                                                     decoration: BoxDecoration(
                                                       gradient: LinearGradient(
@@ -139,6 +146,8 @@ class HomeScreen extends StatelessWidget {
                                                       ),
                                                     ),
                                                   ),
+
+                                                  /// CONTENT
                                                   Padding(
                                                     padding: const EdgeInsets.all(22.0),
                                                     child: Column(
@@ -150,11 +159,29 @@ class HomeScreen extends StatelessWidget {
                                                           crossAxisAlignment:
                                                               CrossAxisAlignment.center,
                                                           children: [
-                                                            const Icon(
-                                                              Icons.account_circle,
-                                                              color: Colors.white,
-                                                              size: 32,
-                                                            ),
+                                                            userSel(store, event.idOrganizer)
+                                                                        ?.profileImageUrl ==
+                                                                    null
+                                                                ? const Icon(
+                                                                    Icons.account_circle,
+                                                                    color: Colors.white,
+                                                                    size: 32,
+                                                                  )
+                                                                : CircleAvatar(
+                                                                    radius: 16,
+                                                                    backgroundImage: NetworkImage(
+                                                                      userSel(store,
+                                                                              event.idOrganizer)!
+                                                                          .profileImageUrl,
+                                                                    ),
+                                                                    onBackgroundImageError:
+                                                                        (exception, stackTrace) =>
+                                                                            const Icon(
+                                                                      Icons.account_circle,
+                                                                      color: Colors.white,
+                                                                      size: 32,
+                                                                    ),
+                                                                  ),
                                                             const SizedBox(width: 8),
                                                             SizedBox(
                                                               width: MediaQuery.of(context)
@@ -162,8 +189,9 @@ class HomeScreen extends StatelessWidget {
                                                                       .width *
                                                                   0.6,
                                                               child: Text(
-                                                                // TODO: put name of organizer here
-                                                                event.idOrganizer,
+                                                                userSel(store, event.idOrganizer)
+                                                                        ?.username ??
+                                                                    'Unknown',
                                                                 style: const TextStyle(
                                                                   color: Colors.white,
                                                                   fontSize: 18,
@@ -245,7 +273,7 @@ class HomeScreen extends StatelessWidget {
                   );
 
                 case LoadingStatus.loading:
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
 
                 case LoadingStatus.error:
                 default:

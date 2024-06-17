@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:go_router/go_router.dart';
+import 'package:collection/collection.dart';
 
 import '/Models/enums.dart';
 
@@ -26,7 +27,7 @@ class ProfileScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
-                    'Please, log in to see your profile.',
+                    'Please log in to see\nyour profile',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 24,
@@ -72,21 +73,18 @@ class ProfileScreen extends StatelessWidget {
                                             child: Icon(
                                               Icons.person,
                                               size: 50,
-                                              color: const Color.fromARGB(
-                                                  255, 34, 34, 34),
+                                              color: Color.fromARGB(255, 34, 34, 34),
                                             ),
                                           )
                                         : CircleAvatar(
                                             radius: 50,
-                                            backgroundImage: NetworkImage(
-                                                viewModel.user.profileImageUrl),
+                                            backgroundImage:
+                                                NetworkImage(viewModel.user.profileImageUrl),
                                           ),
                                     const SizedBox(width: 17),
                                     Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
                                           viewModel.user.username,
@@ -108,8 +106,7 @@ class ProfileScreen extends StatelessWidget {
                                   ],
                                 ),
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 20),
+                                  padding: const EdgeInsets.symmetric(vertical: 20),
                                   child: Center(
                                     child: ElevatedButton(
                                       onPressed: () => viewModel.logout(),
@@ -127,8 +124,7 @@ class ProfileScreen extends StatelessWidget {
                                           ),
                                         )
                                       : Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             const Text(
                                               'Events you have organized:',
@@ -137,10 +133,15 @@ class ProfileScreen extends StatelessWidget {
                                                 fontSize: 24,
                                               ),
                                             ),
-                                            ...viewModel.organizedEventsIds.map(
-                                                (id) => EventSmallCard(
-                                                    event:
-                                                        eventSel(store, id)!)),
+                                            ...viewModel.organizedEventsIds
+                                                .map((id) => eventSel(store, id)!)
+                                                .sortedBy((event) => event.openingDateTime)
+                                                .reversed
+                                                .map(
+                                                  (event) => EventSmallCard(
+                                                    event: event,
+                                                  ),
+                                                )
                                           ],
                                         ),
                                 ),

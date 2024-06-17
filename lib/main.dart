@@ -9,6 +9,7 @@ import '/Redux/store.dart';
 
 import '/Screen/home_screen.dart';
 import '/Screen/event_details_screen.dart';
+import '/Screen/user_screen.dart';
 import '/Screen/new_event_screen.dart';
 import '/Screen/profile_screen.dart';
 import '/Screen/login_screen.dart';
@@ -59,6 +60,13 @@ final GoRouter _router = GoRouter(
       path: '/event/:idEvent',
       builder: (BuildContext context, GoRouterState state) {
         return const EventDetailsScreen();
+      },
+    ),
+    // Screen details
+    GoRoute(
+      path: '/user/:idUser',
+      builder: (BuildContext context, GoRouterState state) {
+        return const UserScreen();
       },
     ),
     StatefulShellRoute.indexedStack(

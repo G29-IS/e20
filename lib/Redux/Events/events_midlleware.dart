@@ -5,10 +5,12 @@ import 'package:collection/collection.dart';
 
 import '/Models/enums.dart';
 import '/Models/event.dart';
+import '/Models/user.dart';
 
 import '/Redux/App/app_state.dart';
 import '/Redux/selectors.dart';
 import '/Redux/Events/events_actions.dart';
+import '/Redux/Users/users_actions.dart';
 
 import '/Services/request_handler.dart';
 import '/Utils/console_log.dart';
@@ -20,43 +22,68 @@ List<Middleware<AppState>> createEventsMiddleware() {
   ];
 }
 
-_createNewEvent(Store<AppState> store, CreateNewEventAction action,
-    NextDispatcher next) async {
+_createNewEvent(Store<AppState> store, CreateNewEventAction action, NextDispatcher next) async {
   store.dispatch(SetEventsLoadingStatusAction(LoadingStatus.loading));
   RequestHandler.createNewEvent(action.event, tokenSel(store)!).then((value) {
     store.dispatch(SetEventsLoadingStatusAction(LoadingStatus.success));
-    GoRouter.of(action.context).go('/home');
+    GoRouter.of(action.context).go('/profile');
   }).catchError((error) {
-    logError(
-        "[MIDDLEWARE _createNewEvent] RequestHandler.createNewEvent: $error");
+    logError("[MIDDLEWARE _createNewEvent] RequestHandler.createNewEvent: $error");
     store.dispatch(SetEventsLoadingStatusAction(LoadingStatus.error));
   });
 }
 
-_fetchEvents(Store<AppState> store, FetchEventsAction action,
-    NextDispatcher next) async {
+_fetchEvents(Store<AppState> store, FetchEventsAction action, NextDispatcher next) async {
   store.dispatch(SetEventsLoadingStatusAction(LoadingStatus.loading));
-  RequestHandler.fetchFeed().then((rawEvents) {
-    IList<Event> parsedEvents =
-        rawEvents.map((element) => Event.fromMap(element)).toIList();
+  RequestHandler.fetchFeed().then(
+    (data) {
+      logSuccess("[MIDDLEWARE _fetchEvents] RequestHandler.fetchFeed: $data");
+      IList<Event> parsedEvents =
+          (data['events']! as List<dynamic>).map((element) => Event.fromMap(element)).toIList();
+      IList<User> parsedUsers =
+          (data['users']! as List<dynamic>).map((element) => User.fromMap(element)).toIList();
+      logWarning("parsedUsers: $parsedUsers");
 
-    IMap<String, Event> events = {
-      for (var event in parsedEvents) event.idEvent: event,
-    }.lock;
+      IMap<String, Event> events = {
+        for (var event in parsedEvents) event.idEvent: event,
+      }.lock;
 
-    IList<IMap<DateTime, IList<String>>> eventsFeed = [
-      (groupBy(parsedEvents, (event) {
-        return event.openingDateTime.copyWith(
-            hour: 0, minute: 0, second: 0, millisecond: 0, microsecond: 0);
-      }).map((key, value) =>
-          MapEntry(key, value.map((e) => e.idEvent).toIList()))).toIMap()
-    ].lock;
+      IMap<String, User> users = {
+        for (var user in parsedUsers) user.idUser: user,
+      }.lock;
 
-    store.dispatch(AddEventsToStateAction(events));
-    store.dispatch(AddEventsIdsToFeedAction(eventsFeed));
+      IList<IMap<DateTime, IList<String>>> eventsFeed = [
+        (groupBy(parsedEvents, (event) {
+          return event.openingDateTime
+              .copyWith(hour: 0, minute: 0, second: 0, millisecond: 0, microsecond: 0);
+        }).map((key, value) => MapEntry(key, value.map((e) => e.idEvent).toIList()))).toIMap()
+      ].lock;
 
-    store.dispatch(SetEventsLoadingStatusAction(LoadingStatus.success));
-  });
+      // Extract and sort the entries by DateTime
+      final sortedEntries = eventsFeed.first.entries.toList()
+        ..sort((a, b) => a.key.compareTo(b.key));
+
+      // Rebuild the IMap with the sorted entries
+      final sortedIMap = IMap.fromEntries(sortedEntries);
+
+      // Update the eventsFeed with the sorted IMap
+      eventsFeed = [sortedIMap].lock;
+
+      logSuccess("eventsFeed SORTED: $eventsFeed");
+
+      store.dispatch(AddEventsToStateAction(events));
+      store.dispatch(AddEventsIdsToFeedAction(eventsFeed));
+
+      store.dispatch(AddUsersToStateAction(users));
+
+      store.dispatch(SetEventsLoadingStatusAction(LoadingStatus.success));
+    },
+  ).onError(
+    (error, stackTrace) {
+      logError("[MIDDLEWARE _fetchEvents] RequestHandler.fetchFeed: $error");
+      store.dispatch(SetEventsLoadingStatusAction(LoadingStatus.error));
+    },
+  );
 
   /*store.dispatch(SetEventsLoadingStatusAction(LoadingStatus.loading));
 

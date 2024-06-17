@@ -6,6 +6,8 @@ import '/Redux/Users/users_actions.dart';
 final usersReducers = combineReducers<UsersState>([
   TypedReducer<UsersState, SetUsersLoadingStatusAction>(_setUsersLoadingStatus),
   TypedReducer<UsersState, SaveUserAction>(_saveUser),
+  TypedReducer<UsersState, AddUsersToStateAction>(_addUsersToState),
+  TypedReducer<UsersState, AddEventsOrganizedByUserAction>(_addEventsOrganizedByUser),
   TypedReducer<UsersState, SetCurrentUserOrganizedEventsIdsAction>(
       _setCurrentUserOrganizedEventsIds),
 ]);
@@ -17,6 +19,19 @@ UsersState _setUsersLoadingStatus(UsersState state, SetUsersLoadingStatusAction 
 UsersState _saveUser(UsersState state, SaveUserAction action) {
   return state.copyWith(
     users: state.users.add(action.idUser, action.user),
+    eventsOrganizedByUser: state.eventsOrganizedByUser.add(
+      action.idUser,
+      action.organizedEventsIds,
+    ),
+  );
+}
+
+UsersState _addUsersToState(UsersState state, AddUsersToStateAction action) {
+  return state.copyWith(users: state.users.addAll(action.users));
+}
+
+UsersState _addEventsOrganizedByUser(UsersState state, AddEventsOrganizedByUserAction action) {
+  return state.copyWith(
     eventsOrganizedByUser: state.eventsOrganizedByUser.add(
       action.idUser,
       action.organizedEventsIds,
