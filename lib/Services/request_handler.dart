@@ -46,11 +46,12 @@ class RequestHandler {
     }
   }
 
-  static Future<void> logout() async {
+  static Future<void> logout(String? token) async {
     logWarning("[RH] Into logout");
 
     var response = await RESTInterface.GET(
       path: '/logout',
+      headers: {'Authorization': 'Bearer $token'},
     );
 
     if (response.statusCode != 200) {
@@ -148,6 +149,25 @@ class RequestHandler {
     } else {
       throw ErrorDescription(
         '[RH ERROR create event]: status code: ${response.statusCode}. body: ${response.data}',
+      );
+    }
+  }
+
+  static Future<bool> deleteEvent(String idEvent, String token) async {
+    logWarning("[RH] Delete event");
+
+    var response = await RESTInterface.DELETE(
+      path: '/events/$idEvent',
+      headers: {'Authorization': 'Bearer $token'},
+      body: {},
+    );
+
+    if (response.statusCode == 200) {
+      logSuccess("[RH Delete event]: event deleted - ${response.data.toString()}");
+      return true;
+    } else {
+      throw ErrorDescription(
+        '[RH ERROR Delete event]: status code: ${response.statusCode}. body: ${response.data}',
       );
     }
   }

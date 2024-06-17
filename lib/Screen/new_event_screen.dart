@@ -24,6 +24,13 @@ class _NewEventScreenState extends State<NewEventScreen> {
   TextEditingController placeAddressController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    coverImageUrlController.text =
+        'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=3000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 34, 34, 34),
@@ -106,7 +113,41 @@ class _NewEventScreenState extends State<NewEventScreen> {
                             borderSide: const BorderSide(color: Colors.white),
                           ),
                         ),
+                        onTap: () => coverImageUrlController.text = '',
+                        onChanged: (value) {
+                          setState(() {});
+                        },
                       ),
+
+                      const SizedBox(height: 15),
+                      const Text(
+                        'Cover image preview',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
+                      ),
+                      const SizedBox(height: 5),
+
+                      coverImageUrlController.text.isEmpty
+                          ? const SizedBox(
+                              height: 200,
+                              child: Placeholder(
+                                color: Colors.green,
+                              ),
+                            )
+                          : Container(
+                              width: double.infinity,
+                              height: 200,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                image: DecorationImage(
+                                  image: NetworkImage(coverImageUrlController.text),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+
                       // const SizedBox(height: 15),
                       // TextField(
                       //   decoration: InputDecoration(

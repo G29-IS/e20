@@ -36,7 +36,8 @@ class PasswordForgottenAction {
 }
 
 class LogoutAction {
-  LogoutAction();
+  final BuildContext context;
+  LogoutAction(this.context);
 }
 
 class LoginWithGoogleAction {

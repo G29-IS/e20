@@ -5,9 +5,11 @@ import 'package:intl/intl.dart';
 import '/Models/event.dart';
 
 class EventSmallCard extends StatelessWidget {
-  const EventSmallCard({super.key, required this.event});
+  const EventSmallCard({super.key, required this.event, this.onDeleteEvent});
 
   final Event event;
+
+  final Function(String idEvent)? onDeleteEvent;
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +67,20 @@ class EventSmallCard extends StatelessWidget {
                           overflow: TextOverflow.fade,
                         ),
                       ),
+                      if (onDeleteEvent != null)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: ElevatedButton(
+                            onPressed: () => onDeleteEvent!(event.idEvent),
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.red.withOpacity(0.2),
+                            ),
+                            child: const Text(
+                              'Delete',
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          ),
+                        ),
                     ],
                   ),
                 ),

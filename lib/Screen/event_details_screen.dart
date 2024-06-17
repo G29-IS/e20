@@ -165,7 +165,7 @@ class EventDetailsScreen extends StatelessWidget {
                                         onBackgroundImageError: (exception, stackTrace) =>
                                             const Icon(
                                           Icons.account_circle,
-                                          color: Colors.white,
+                                          color: Colors.yellow,
                                           size: 32,
                                         ),
                                       ),

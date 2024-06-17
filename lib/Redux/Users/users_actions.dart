@@ -40,3 +40,8 @@ class SetCurrentUserOrganizedEventsIdsAction {
   final IList<String> organizedEventsIds;
   SetCurrentUserOrganizedEventsIdsAction(this.idCurrentUser, this.organizedEventsIds);
 }
+
+class DeleteEventOrganizedByCurrentUserAction {
+  final String idEvent;
+  DeleteEventOrganizedByCurrentUserAction(this.idEvent);
+}

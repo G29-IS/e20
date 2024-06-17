@@ -28,3 +28,8 @@ class CreateNewEventAction {
   final BuildContext context;
   CreateNewEventAction(this.event, this.context);
 }
+
+class DeleteEventAction {
+  final String idEvent;
+  DeleteEventAction(this.idEvent);
+}

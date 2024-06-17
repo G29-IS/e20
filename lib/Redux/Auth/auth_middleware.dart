@@ -40,9 +40,10 @@ _login(Store<AppState> store, LoginAction action, NextDispatcher next) async {
 
 _logout(Store<AppState> store, LogoutAction action, NextDispatcher next) {
   store.dispatch(SetAuthLoadingStatusAction(LoadingStatus.loading));
-  RequestHandler.logout().then((_) {
+  RequestHandler.logout(tokenSel(store)).then((_) {
     store.dispatch(RemoveAuthTokenAction());
-    store.dispatch(SetAuthLoadingStatusAction(LoadingStatus.success));
+    GoRouter.of(action.context).go('/home');
+    store.dispatch(SetAuthLoadingStatusAction(LoadingStatus.none));
   }).catchError((error) {
     logError("[MIDDLEWARE _logout] RequestHandler.logout: $error");
     store.dispatch(SetAuthLoadingStatusAction(LoadingStatus.error));

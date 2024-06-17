@@ -10,6 +10,8 @@ final usersReducers = combineReducers<UsersState>([
   TypedReducer<UsersState, AddEventsOrganizedByUserAction>(_addEventsOrganizedByUser),
   TypedReducer<UsersState, SetCurrentUserOrganizedEventsIdsAction>(
       _setCurrentUserOrganizedEventsIds),
+  TypedReducer<UsersState, DeleteEventOrganizedByCurrentUserAction>(
+      _deleteEventOrganizedByCurrentUser),
 ]);
 
 UsersState _setUsersLoadingStatus(UsersState state, SetUsersLoadingStatusAction action) {
@@ -45,6 +47,18 @@ UsersState _setCurrentUserOrganizedEventsIds(
     eventsOrganizedByUser: state.eventsOrganizedByUser.add(
       action.idCurrentUser,
       action.organizedEventsIds,
+    ),
+  );
+}
+
+UsersState _deleteEventOrganizedByCurrentUser(
+    UsersState state, DeleteEventOrganizedByCurrentUserAction action) {
+  return state.copyWith(
+    eventsOrganizedByUser: state.eventsOrganizedByUser.map(
+      (key, value) => MapEntry(
+        key,
+        value.remove(action.idEvent),
+      ),
     ),
   );
 }

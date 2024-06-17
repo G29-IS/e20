@@ -10,6 +10,7 @@ import '/Models/user.dart';
 import '/Redux/App/app_state.dart';
 import '/Redux/selectors.dart';
 import '/Redux/Auth/auth_actions.dart';
+import '/Redux/Events/events_actions.dart';
 
 import '/Utils/console_log.dart';
 
@@ -29,7 +30,11 @@ class CurrentProfileViewModel {
     BuildContext context,
   ) login;
 
-  final Function logout;
+  final Function(
+    BuildContext context,
+  ) logout;
+
+  final Function(String idEvenet) deleteEvent;
 
   const CurrentProfileViewModel({
     required this.loadingStatus,
@@ -38,21 +43,26 @@ class CurrentProfileViewModel {
     required this.resetPassword,
     required this.login,
     required this.logout,
+    required this.deleteEvent,
   });
 
   factory CurrentProfileViewModel.create(Store<AppState> store) {
-    logWarning("CurrentPRofileViewModel.create(store) called: ${currentUserSel(store)}");
+    logWarning("CurrentProfileViewModel.create(store) called: ${currentUserSel(store)}");
 
     _login(String username, String password, BuildContext context) {
       store.dispatch(LoginAction(username, password, context));
     }
 
-    _logout() {
-      store.dispatch(LogoutAction());
+    _logout(BuildContext context) {
+      store.dispatch(LogoutAction(context));
     }
 
     _resetPassword(String email) {
       store.dispatch(PasswordForgottenAction(email));
+    }
+
+    _deleteEvent(String idEvent) {
+      store.dispatch(DeleteEventAction(idEvent));
     }
 
     return CurrentProfileViewModel(
@@ -62,6 +72,7 @@ class CurrentProfileViewModel {
       resetPassword: _resetPassword,
       login: _login,
       logout: _logout,
+      deleteEvent: _deleteEvent,
     );
   }
 

@@ -19,6 +19,7 @@ List<Middleware<AppState>> createEventsMiddleware() {
   return [
     TypedMiddleware<AppState, FetchEventsAction>(_fetchEvents),
     TypedMiddleware<AppState, CreateNewEventAction>(_createNewEvent),
+    TypedMiddleware<AppState, DeleteEventAction>(_deleteEvent),
   ];
 }
 
@@ -30,6 +31,15 @@ _createNewEvent(Store<AppState> store, CreateNewEventAction action, NextDispatch
   }).catchError((error) {
     logError("[MIDDLEWARE _createNewEvent] RequestHandler.createNewEvent: $error");
     store.dispatch(SetEventsLoadingStatusAction(LoadingStatus.error));
+  });
+}
+
+_deleteEvent(Store<AppState> store, DeleteEventAction action, NextDispatcher next) async {
+  RequestHandler.deleteEvent(action.idEvent, tokenSel(store)!).then((value) {
+    next(action);
+    store.dispatch(DeleteEventOrganizedByCurrentUserAction(action.idEvent));
+  }).catchError((error) {
+    logError("[MIDDLEWARE _deleteEvent] RequestHandler.deleteEvent: $error");
   });
 }
 
