@@ -15,8 +15,15 @@ import '/Widget/event_small_card.dart';
 
 import '/Utils/console_log.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  final String? token = tokenSel(store);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +31,7 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 34, 34, 34),
       extendBody: true,
-      body: tokenSel(store) == null
+      body: token == null
           ? Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
