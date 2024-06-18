@@ -11,6 +11,7 @@ import '/Redux/App/app_state.dart';
 import '/Redux/selectors.dart';
 import '/Redux/Events/events_actions.dart';
 import '/Redux/Users/users_actions.dart';
+import '/Redux/Auth/auth_actions.dart';
 
 import '/Services/request_handler.dart';
 import '/Utils/console_log.dart';
@@ -25,8 +26,10 @@ List<Middleware<AppState>> createEventsMiddleware() {
 
 _createNewEvent(Store<AppState> store, CreateNewEventAction action, NextDispatcher next) async {
   store.dispatch(SetEventsLoadingStatusAction(LoadingStatus.loading));
+  logWarning("[MIDDLEWARE _createNewEvent] action.event: ${action.event}");
   RequestHandler.createNewEvent(action.event, tokenSel(store)!).then((value) {
     store.dispatch(SetEventsLoadingStatusAction(LoadingStatus.success));
+    store.dispatch(FetchCurrentUserAction()); // Update the user's events
     GoRouter.of(action.context).go('/profile');
   }).catchError((error) {
     logError("[MIDDLEWARE _createNewEvent] RequestHandler.createNewEvent: $error");
