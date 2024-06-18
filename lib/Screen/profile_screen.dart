@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:go_router/go_router.dart';
+import 'package:collection/collection.dart';
 
 import '/Models/enums.dart';
 
@@ -12,25 +13,36 @@ import '/Redux/ViewModels/current_profileVM.dart';
 
 import '/Widget/event_small_card.dart';
 
-class ProfileScreen extends StatelessWidget {
+import '/Utils/console_log.dart';
+
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
   @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  final String? token = tokenSel(store);
+
+  @override
   Widget build(BuildContext context) {
+    logWarning('ProfileScreen.build tokeSel(store): ${tokenSel(store)}');
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 34, 34, 34),
       extendBody: true,
-      body: tokenSel(store) == null
+      body: token == null
           ? Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
-                    'Please, log in to see your profile.',
+                    'Please log in to see\nyour profile',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 24,
                     ),
+                    textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
@@ -71,7 +83,7 @@ class ProfileScreen extends StatelessWidget {
                                             child: Icon(
                                               Icons.person,
                                               size: 50,
-                                              color: const Color.fromARGB(255, 34, 34, 34),
+                                              color: Color.fromARGB(255, 34, 34, 34),
                                             ),
                                           )
                                         : CircleAvatar(
@@ -107,9 +119,7 @@ class ProfileScreen extends StatelessWidget {
                                   padding: const EdgeInsets.symmetric(vertical: 20),
                                   child: Center(
                                     child: ElevatedButton(
-                                      onPressed: () {
-                                        store.dispatch(LogoutAction());
-                                      },
+                                      onPressed: () => viewModel.logout(context),
                                       child: const Text('Log out'),
                                     ),
                                   ),
@@ -133,8 +143,16 @@ class ProfileScreen extends StatelessWidget {
                                                 fontSize: 24,
                                               ),
                                             ),
-                                            ...viewModel.organizedEventsIds.map((id) =>
-                                                EventSmallCard(event: eventSel(store, id)!)),
+                                            ...viewModel.organizedEventsIds
+                                                .map((id) => eventSel(store, id)!)
+                                                .sortedBy((event) => event.openingDateTime)
+                                                .reversed
+                                                .map(
+                                                  (event) => EventSmallCard(
+                                                    event: event,
+                                                    onDeleteEvent: viewModel.deleteEvent,
+                                                  ),
+                                                )
                                           ],
                                         ),
                                 ),
@@ -165,9 +183,31 @@ class ProfileScreen extends StatelessWidget {
                           ),
                         );
                       case LoadingStatus.loading:
-                      default:
                         return const Center(
                           child: CircularProgressIndicator(),
+                        );
+                      case LoadingStatus.none:
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                'Please log in to see\nyour profile',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 24,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 20),
+                              ElevatedButton(
+                                onPressed: () {
+                                  context.go('/login');
+                                },
+                                child: const Text('Log in'),
+                              ),
+                            ],
+                          ),
                         );
                     }
                   }),

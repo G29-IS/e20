@@ -3,22 +3,22 @@
 enum LoadingStatus { none, loading, error, success }
 
 enum EventType {
-  event,
-  concert,
-  festival,
-  bar,
-  club,
-  party,
-  houseparty,
-  privateparty,
-  workshop,
-  congress
+  EVENT,
+  CONCERT,
+  FESTIVAL,
+  BAR,
+  CLUB,
+  PARTY,
+  HOUSEPARTY,
+  PRIVATEPARTY,
+  WORKSHOP,
+  CONGRESS
 }
 
-enum EventVisibility { public, follower, following, followerAndFollowing }
+enum EventVisibility { PUBLIC, FOLLOWER, FOLLOWING, FOLLOWER_AND_FOLLOWING }
 
-enum EventAvailability { available, running_out, canceled, sold_out }
+enum EventAvailability { AVAILABLE, RUNNING_OUT, CANCELED, SOLD_OUT }
 
-enum UserVisibility { public, private }
+enum UserVisibility { PUBLIC, PRIVATE }
 
-enum Gender { male, female, other, not_specified }
+enum Gender { MALE, FEMALE, OTHER, NOT_SPECIFIED }

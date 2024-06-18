@@ -31,8 +31,7 @@ class AuthState {
   factory AuthState.initial() {
     return const AuthState(
       // authToken: null,
-      /// TODO: REMOVE AFTER LOGIN IMPLEMENTATION
-      authToken: "token",
+      authToken: null,
       currentUser: null,
       authLoadingStatus: LoadingStatus.none,
     );

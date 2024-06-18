@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 
 import '/Models/enums.dart';
@@ -20,4 +21,15 @@ class AddEventsIdsToFeedAction {
 class AddEventsToStateAction {
   final IMap<String, Event> events;
   AddEventsToStateAction(this.events);
+}
+
+class CreateNewEventAction {
+  final Event event;
+  final BuildContext context;
+  CreateNewEventAction(this.event, this.context);
+}
+
+class DeleteEventAction {
+  final String idEvent;
+  DeleteEventAction(this.idEvent);
 }

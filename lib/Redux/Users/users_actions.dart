@@ -24,8 +24,24 @@ class SaveUserAction {
   });
 }
 
+class AddUsersToStateAction {
+  final IMap<String, User> users;
+  AddUsersToStateAction(this.users);
+}
+
+class AddEventsOrganizedByUserAction {
+  final String idUser;
+  final IList<String> organizedEventsIds;
+  AddEventsOrganizedByUserAction(this.idUser, this.organizedEventsIds);
+}
+
 class SetCurrentUserOrganizedEventsIdsAction {
   final String idCurrentUser;
   final IList<String> organizedEventsIds;
   SetCurrentUserOrganizedEventsIdsAction(this.idCurrentUser, this.organizedEventsIds);
+}
+
+class DeleteEventOrganizedByCurrentUserAction {
+  final String idEvent;
+  DeleteEventOrganizedByCurrentUserAction(this.idEvent);
 }

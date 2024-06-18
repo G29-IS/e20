@@ -14,7 +14,8 @@ import '/Redux/App/app_state.dart';
 
 String? tokenSel(Store<AppState> store) => store.state.authState.authToken;
 
-LoadingStatus authLoadingStatusSel(Store<AppState> store) => store.state.authState.authLoadingStatus;
+LoadingStatus authLoadingStatusSel(Store<AppState> store) =>
+    store.state.authState.authLoadingStatus;
 
 User? currentUserSel(Store<AppState> store) => store.state.authState.currentUser;
 
@@ -22,34 +23,48 @@ User? currentUserSel(Store<AppState> store) => store.state.authState.currentUser
 ///
 /// USER STATE
 
-IList<String> currentUserOrganizedEventsIdsSel(Store<AppState> store) => store.state.authState.currentUser == null
-    ? IList()
-    : store.state.usersState.eventsOrganizedByUser[store.state.authState.currentUser!.idUser] ?? IList();
+LoadingStatus usersLoadingStatusSel(Store<AppState> store) =>
+    store.state.usersState.usersLoadingStatus;
+
+IList<String> currentUserOrganizedEventsIdsSel(Store<AppState> store) =>
+    store.state.authState.currentUser == null
+        ? IList()
+        : store.state.usersState.eventsOrganizedByUser[store.state.authState.currentUser!.idUser] ??
+            IList();
+
+User? userSel(Store<AppState> store, String id) => store.state.usersState.users[id];
+
+IList<String> userOrganizedEventsIdsSel(Store<AppState> store, String idUser) =>
+    store.state.usersState.eventsOrganizedByUser[idUser] ?? IList();
 
 ///
 ///
 /// EVENTS STATE
 
-LoadingStatus eventsLoadingStatusSel(Store<AppState> store) => store.state.eventsState.feedLoadingStatus;
+LoadingStatus eventsLoadingStatusSel(Store<AppState> store) =>
+    store.state.eventsState.feedLoadingStatus;
 
 IMap<String, Event> eventsSel(Store<AppState> store) => store.state.eventsState.events;
 
 Event? eventSel(Store<AppState> store, String id) => store.state.eventsState.events[id];
 
-IList<IMap<DateTime, IList<String>>> eventsFeedSel(Store<AppState> store) => store.state.eventsState.eventsFeed;
+IList<IMap<DateTime, IList<String>>> eventsFeedSel(Store<AppState> store) =>
+    store.state.eventsState.eventsFeed;
 
 final eventsFeedMemoizedSel = createSelector2<Store<AppState>, IMap<String, Event>,
     IList<IMap<DateTime, IList<String>>>, IList<IMap<DateTime, IList<Event>>>>(
   eventsSel,
   eventsFeedSel,
   (events, eventsFeed) {
-    final result = <IMap<DateTime, IList<Event>>>[];
-    for (final day in eventsFeed) {
-      final date = day.keys.first;
-      final ids = day.get(date)!; // Assumption: if there's a date, there's at least one id.
-      final eventsForDay = ids.map((id) => events[id]!).toIList();
-      result.add(IMap({date: eventsForDay}));
+    IList<IMap<DateTime, IList<Event>>> result = IList();
+    for (IMap<DateTime, IList<String>> day in eventsFeed) {
+      for (var entry in day.entries) {
+        DateTime date = entry.key;
+        IList<String> ids = entry.value;
+        IList<Event> eventsForDay = ids.map((id) => events[id]!).toIList();
+        result = result.add(IMap({date: eventsForDay}));
+      }
     }
-    return IList(result);
+    return result.flush;
   },
 );

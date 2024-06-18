@@ -15,7 +15,7 @@ class User {
   final String phone;
   final DateTime birthDate;
   final Gender gender;
-  // final CityOfInterest cityOfInterest; // TODO: on D3, CityOfInterest is not specified.
+  final String cityOfInterest;
   final String profileImageUrl;
 
   const User({
@@ -28,6 +28,7 @@ class User {
     required this.phone,
     required this.birthDate,
     required this.gender,
+    required this.cityOfInterest,
     required this.profileImageUrl,
   });
 
@@ -40,7 +41,8 @@ class User {
       email: '',
       passwordHash: '',
       phone: '',
-      gender: Gender.other,
+      gender: Gender.OTHER,
+      cityOfInterest: '',
       profileImageUrl: '',
       birthDate: DateTime.now(),
     );
@@ -68,6 +70,7 @@ class User {
       phone: phone ?? this.phone,
       birthDate: birthDate ?? this.birthDate,
       gender: gender ?? this.gender,
+      cityOfInterest: cityOfInterest,
       profileImageUrl: profileImageUrl ?? this.profileImageUrl,
     );
   }
@@ -99,7 +102,8 @@ class User {
       passwordHash: map['passwordHash'],
       phone: map['phone'] ?? '',
       birthDate: DateTime.parse(map['birthDate']),
-      gender: Gender.values.byName(map['gender'].toString().toLowerCase()),
+      gender: Gender.values.byName(map['gender'].toString()),
+      cityOfInterest: map['cityOfInterest'] ?? '',
       profileImageUrl: map['profileImageUrl'] ?? '',
     );
   }

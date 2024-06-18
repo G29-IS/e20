@@ -8,9 +8,12 @@ import 'package:e20/firebase_options.dart';
 import '/Redux/store.dart';
 
 import '/Screen/home_screen.dart';
+import '/Screen/event_details_screen.dart';
+import '/Screen/user_screen.dart';
 import '/Screen/new_event_screen.dart';
 import '/Screen/profile_screen.dart';
 import '/Screen/login_screen.dart';
+import '/Screen/password_screen.dart';
 
 import '/Utils/console_log.dart';
 
@@ -40,16 +43,35 @@ final GoRouter _router = GoRouter(
   navigatorKey: _rootNavigatorKey,
   initialLocation: '/home',
   routes: <RouteBase>[
-    ShellRoute(routes: [
-      GoRoute(
-        path: '/login',
-        builder: (BuildContext context, GoRouterState state) {
-          return const LoginScreen();
-        },
-      ),
-    ]),
+    GoRoute(
+      path: '/login',
+      builder: (BuildContext context, GoRouterState state) {
+        return const LoginScreen();
+      },
+    ),
+    GoRoute(
+      path: '/password',
+      builder: (BuildContext context, GoRouterState state) {
+        return const PasswordScreen();
+      },
+    ),
+    // Screen details
+    GoRoute(
+      path: '/event/:idEvent',
+      builder: (BuildContext context, GoRouterState state) {
+        return const EventDetailsScreen();
+      },
+    ),
+    // Screen details
+    GoRoute(
+      path: '/user/:idUser',
+      builder: (BuildContext context, GoRouterState state) {
+        return const UserScreen();
+      },
+    ),
     StatefulShellRoute.indexedStack(
-      builder: (BuildContext context, GoRouterState state, StatefulNavigationShell navigationShell) {
+      builder:
+          (BuildContext context, GoRouterState state, StatefulNavigationShell navigationShell) {
         // Return the widget that implements the custom shell (in this case
         // using a BottomNavigationBar). The StatefulNavigationShell is passed
         // to be able access the state of the shell and to navigate to other
@@ -91,12 +113,6 @@ final GoRouter _router = GoRouter(
                 return const ProfileScreen();
               },
             ),
-            GoRoute(
-              path: '/login',
-              builder: (BuildContext context, GoRouterState state) {
-                return const LoginScreen();
-              },
-            ),
           ],
         ),
       ],
@@ -114,7 +130,9 @@ class MyApp extends StatelessWidget {
       child: MaterialApp.router(
         title: 'E20',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 30, 215, 96)),
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color.fromARGB(255, 30, 215, 96),
+          ),
           useMaterial3: true,
           fontFamily: 'Outfit',
         ),

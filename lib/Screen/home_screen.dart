@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:story_view/widgets/story_view.dart';
 import 'package:story_view/controller/story_controller.dart';
+import 'package:story_view/widgets/story_view.dart';
 import 'package:tiktoklikescroller/tiktoklikescroller.dart';
 
 import '/Models/enums.dart';
 
 import '/Redux/store.dart';
+import '/Redux/selectors.dart';
 import '/Redux/App/app_state.dart';
 import '/Redux/Events/events_actions.dart';
 import '/Redux/ViewModels/homeVM.dart';
-
 import '/Utils/console_log.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -36,6 +37,7 @@ class HomeScreen extends StatelessWidget {
         store.dispatch(FetchEventsAction());
       },
       converter: (store) => HomeViewModel.create(store),
+      distinct: true,
       builder: (context, vm) {
         return Scaffold(
             backgroundColor: const Color.fromARGB(255, 34, 34, 34),
@@ -64,6 +66,8 @@ class HomeScreen extends StatelessWidget {
                               child: Text('No events available',
                                   style: TextStyle(color: Colors.white)));
                         } else {
+                          // return Container(
+                          //     color: Colors.primaries[index % Colors.primaries.length],
                           return SafeArea(
                             top: true,
                             bottom: true,
@@ -109,6 +113,7 @@ class HomeScreen extends StatelessWidget {
                                             (event) => StoryItem(
                                               Stack(
                                                 children: [
+                                                  /// BACKGROUND IMAGE
                                                   Container(
                                                     decoration: BoxDecoration(
                                                       image: DecorationImage(
@@ -124,6 +129,8 @@ class HomeScreen extends StatelessWidget {
                                                       color: Colors.grey[850],
                                                     ),
                                                   ),
+
+                                                  /// GRADIENT
                                                   Container(
                                                     decoration: BoxDecoration(
                                                       gradient: LinearGradient(
@@ -139,6 +146,8 @@ class HomeScreen extends StatelessWidget {
                                                       ),
                                                     ),
                                                   ),
+
+                                                  /// CONTENT
                                                   Padding(
                                                     padding: const EdgeInsets.all(22.0),
                                                     child: Column(
@@ -150,11 +159,29 @@ class HomeScreen extends StatelessWidget {
                                                           crossAxisAlignment:
                                                               CrossAxisAlignment.center,
                                                           children: [
-                                                            const Icon(
-                                                              Icons.account_circle,
-                                                              color: Colors.white,
-                                                              size: 32,
-                                                            ),
+                                                            userSel(store, event.idOrganizer)
+                                                                        ?.profileImageUrl ==
+                                                                    null
+                                                                ? const Icon(
+                                                                    Icons.account_circle,
+                                                                    color: Colors.white,
+                                                                    size: 32,
+                                                                  )
+                                                                : CircleAvatar(
+                                                                    radius: 16,
+                                                                    backgroundImage: NetworkImage(
+                                                                      userSel(store,
+                                                                              event.idOrganizer)!
+                                                                          .profileImageUrl,
+                                                                    ),
+                                                                    onBackgroundImageError:
+                                                                        (exception, stackTrace) =>
+                                                                            const Icon(
+                                                                      Icons.account_circle,
+                                                                      color: Colors.yellow,
+                                                                      size: 32,
+                                                                    ),
+                                                                  ),
                                                             const SizedBox(width: 8),
                                                             SizedBox(
                                                               width: MediaQuery.of(context)
@@ -162,8 +189,9 @@ class HomeScreen extends StatelessWidget {
                                                                       .width *
                                                                   0.6,
                                                               child: Text(
-                                                                // TODO: put name of organizer here
-                                                                event.idOrganizer,
+                                                                userSel(store, event.idOrganizer)
+                                                                        ?.username ??
+                                                                    'Unknown',
                                                                 style: const TextStyle(
                                                                   color: Colors.white,
                                                                   fontSize: 18,
@@ -193,41 +221,35 @@ class HomeScreen extends StatelessWidget {
                                                           ),
                                                         ),
                                                         const SizedBox(height: 8),
-                                                        GestureDetector(
-                                                          onTap: () {
+                                                        ElevatedButton(
+                                                          autofocus: true,
+                                                          style: ElevatedButton.styleFrom(
+                                                            backgroundColor: Colors.white12,
+                                                            foregroundColor: Colors.white,
+                                                            shape: RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius.circular(10),
+                                                            ),
+                                                          ),
+                                                          onPressed: () {
+                                                            context.push('/event/${event.idEvent}');
                                                             logSuccess(
-                                                                "GestureDetector: Opening event details for ${event.idEvent}");
+                                                                "Opening event details for ${event.idEvent}");
                                                           },
-                                                          child: ElevatedButton(
-                                                            autofocus: true,
-                                                            style: ElevatedButton.styleFrom(
-                                                              backgroundColor: Colors.white12,
-                                                              foregroundColor: Colors.white,
-                                                              shape: RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius.circular(10),
-                                                              ),
-                                                            ),
-                                                            onPressed: () {
-                                                              // TODO: open event details
-                                                              logSuccess(
-                                                                  "Opening event details for ${event.idEvent}");
-                                                            },
-                                                            onLongPress: () {
-                                                              // TODO: open event details
-                                                              logSuccess(
-                                                                  "Opening event details for ${event.idEvent}");
-                                                            },
-                                                            child: const Row(
-                                                              mainAxisSize: MainAxisSize.max,
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment.spaceBetween,
-                                                              children: [
-                                                                Text('See details'),
-                                                                SizedBox(width: 8),
-                                                                Icon(Icons.arrow_forward),
-                                                              ],
-                                                            ),
+                                                          onLongPress: () {
+                                                            context.push('/event/${event.idEvent}');
+                                                            logSuccess(
+                                                                "Opening event details for ${event.idEvent}");
+                                                          },
+                                                          child: const Row(
+                                                            mainAxisSize: MainAxisSize.max,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment.spaceBetween,
+                                                            children: [
+                                                              Text('Long press to see details'),
+                                                              SizedBox(width: 8),
+                                                              Icon(Icons.arrow_forward),
+                                                            ],
                                                           ),
                                                         ),
                                                       ],
@@ -251,7 +273,7 @@ class HomeScreen extends StatelessWidget {
                   );
 
                 case LoadingStatus.loading:
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
 
                 case LoadingStatus.error:
                 default:

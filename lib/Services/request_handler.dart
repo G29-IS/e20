@@ -1,11 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart' show ErrorDescription;
 
+import '/Models/event.dart';
 import '/Models/user.dart';
-
-import '/Utils/console_log.dart';
 import '/Services/api_interface.dart';
+import '/Utils/console_log.dart';
 
 class RequestHandler {
   ///
@@ -48,11 +46,26 @@ class RequestHandler {
     }
   }
 
-  static Future<void> logout() async {
+  static Future<void> logout(String? token) async {
     logWarning("[RH] Into logout");
 
     var response = await RESTInterface.GET(
       path: '/logout',
+      headers: {'Authorization': 'Bearer $token'},
+    );
+
+    if (response.statusCode != 200) {
+      throw ErrorDescription(
+        '[RH ERROR logout]: status code: ${response.statusCode}. body: ${response.data}',
+      );
+    }
+  }
+
+  static Future<void> passwordForgotten(String email) async {
+    logWarning("[RH] Into password forgotten");
+
+    var response = await RESTInterface.GET(
+      path: '/password-forgotten?email=$email',
     );
 
     if (response.statusCode != 200) {
@@ -74,7 +87,7 @@ class RequestHandler {
 
       if (response.statusCode == 200 && response.data != null) {
         logSuccess("[RH fetchCurrentUser]: ${response.data.toString()}");
-        return User.fromJson(response.data);
+        return User.fromMap(response.data);
       } else {
         throw ErrorDescription(
           '[RH ERROR fetchCurrentUser]: status code: ${response.statusCode}. body: ${response.data}',
@@ -109,7 +122,7 @@ class RequestHandler {
   ///
   /// EVENTS STATE
 
-  static Future<List<dynamic>> fetchFeed() async {
+  static Future<Map<String, dynamic>> fetchFeed() async {
     var response = await RESTInterface.GET(
       path: '/events',
     );
@@ -118,6 +131,44 @@ class RequestHandler {
       return response.data;
     } else {
       throw ErrorDescription('fetchFeed error: status code is ${response.data}');
+    }
+  }
+
+  static Future<dynamic> createNewEvent(Event event, String token) async {
+    logWarning("[RH] Post event");
+
+    var response = await RESTInterface.POST(
+      path: '/events',
+      body: event.toMap(),
+      headers: {'Authorization': 'Bearer $token'},
+    );
+
+    if (response.statusCode == 200 && response.data != null) {
+      logSuccess("[RH create event]: created event - ${response.data.toString()}");
+      return response.data;
+    } else {
+      throw ErrorDescription(
+        '[RH ERROR create event]: status code: ${response.statusCode}. body: ${response.data}',
+      );
+    }
+  }
+
+  static Future<bool> deleteEvent(String idEvent, String token) async {
+    logWarning("[RH] Delete event");
+
+    var response = await RESTInterface.DELETE(
+      path: '/events/$idEvent',
+      headers: {'Authorization': 'Bearer $token'},
+      body: {},
+    );
+
+    if (response.statusCode == 200) {
+      logSuccess("[RH Delete event]: event deleted - ${response.data.toString()}");
+      return true;
+    } else {
+      throw ErrorDescription(
+        '[RH ERROR Delete event]: status code: ${response.statusCode}. body: ${response.data}',
+      );
     }
   }
 }
