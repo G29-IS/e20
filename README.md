@@ -26,7 +26,7 @@
 
 ### Login
 <p align="middle">
-<img src="https://github.com/G29-IS/e20/blob/main/github-assets/login.png" alt="Login" width="256">
 <img src="https://github.com/G29-IS/e20/blob/main/github-assets/login_prompt.png" alt="Login Prompt" width="256">
+<img src="https://github.com/G29-IS/e20/blob/main/github-assets/login.png" alt="Login" width="256">
 <img src="https://github.com/G29-IS/e20/blob/main/github-assets/lost_password.png" alt="Lost Password" width="256">
 </p>
