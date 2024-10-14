@@ -3,10 +3,10 @@
 ## Screenshots
 
 ### Feed
-- <img src="https://github.com/G29-IS/e20/blob/main/github-assets/feed_1.png" alt="Feed 1" width="300">
-- <img src="https://github.com/G29-IS/e20/blob/main/github-assets/feed_2.png" alt="Feed 2" width="300">
-- <img src="https://github.com/G29-IS/e20/blob/main/github-assets/feed_3.png" alt="Feed 3" width="300">
-- <img src="https://github.com/G29-IS/e20/blob/main/github-assets/feed_4.png" alt="Feed 4" width="300">
+<img src="https://github.com/G29-IS/e20/blob/main/github-assets/feed_1.png" alt="Feed 1" width="300">
+<img src="https://github.com/G29-IS/e20/blob/main/github-assets/feed_2.png" alt="Feed 2" width="300">
+<img src="https://github.com/G29-IS/e20/blob/main/github-assets/feed_3.png" alt="Feed 3" width="300">
+<img src="https://github.com/G29-IS/e20/blob/main/github-assets/feed_4.png" alt="Feed 4" width="300">
 
 ### Event & Event Creation
 - <img src="https://github.com/G29-IS/e20/blob/main/github-assets/event.png" alt="Event" width="300">
